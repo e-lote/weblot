@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    <record id="view_partner_filter_inh" model="ir.ui.view">
+        <field name="name">Partners - Search</field>
+        <field name="model">res.partner</field>
+	<field name="inherit_id" ref="base.view_res_partner_filter" />
+        <field name="arch" type="xml">
+                <xpath expr="//filter[@string='Country']" position="after">
+			<separator />
+                        <filter string='Region' icon="terp-mrp" domain="[]" context="{'group_by' : 'region'}"/>
+                        <filter string='Ciudad' icon="terp-mrp" domain="[]" context="{'group_by' : 'city'}"/>
+                </xpath>
+                <xpath expr="//filter[@string='Suppliers']" position="after">
+        	        <filter string="Saldo Pendiente" icon="terp-camera_test"  domain="[('credit','>',0)]"
+				 help = "Clientes con saldo deudor" />
+                </xpath>
+		        <!-- filter string="Planificada" icon="terp-document-new" domain="[('estado_llamada','=','10 - PLA')]" help = "Planificada" />
+        	        <filter string="En Proceso" icon="terp-camera_test"   domain="[('estado_llamada','!=','10 - PLA')]" help = "En Proceso" />
+			<separator />
+			<filter icon="terp-go-today" string="Hoy" 
+				domain="[('fecha_llamada','&lt;=',time.strftime('%%Y-%%m-%%d 23:59:59')),
+					('fecha_llamada','&gt;=',time.strftime('%%Y-%%m-%%d 00:00:00'))]" 
+				help="Orders processed Today or planned for Today"/>
+			<filter icon="terp-go-today" string="Anteriores a Hoy" 
+				domain="[('fecha_llamada','&lt;=',time.strftime('%%Y-%%m-%%d 00:00:00'))]" 
+				help="Orders processed Today or planned for Today"/>
+			<filter icon="terp-go-today" string="Posteriores a Hoy" 
+				domain="[('fecha_llamada','&gt;=',time.strftime('%%Y-%%m-%%d 23:59:59'))]" 
+				help="Orders processed Today or planned for Today"/>
+			<separator / -->
+        </field>
+    </record>
+
+
+	<record model="ir.ui.view" id="partner_sba_form_view">
+	    <field name="name">res.partner.sba.form.inherit</field>
+	    <field name="model">res.partner</field>
+	    <field name="inherit_id" ref="base.view_partner_form"/>
+	    <field name="arch" type="xml">
+	        <data>
+			<notebook>
+				<page string="SBA">
+				   <group colspan="2">
+					<field name="region" /> 
+					<field name="sucursal" /> 
+					<field name="canal" /> 
+					<field name="cod_epicor" /> 
+				   </group>
+				</page>
+			</notebook>
+			<!-- field name="function" position="after">
+				<group>
+					<field name="document_type_id" />
+					<field name="document_number" />
+				</group>
+			</field -->
+		</data>
+	    </field>
+	</record>
+
+    </data>
+</openerp>

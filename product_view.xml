@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="productsupplier_tree_view" model="ir.ui.view">
+            <field name="name">product.supplierinfo.treeview</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Product Supplier Info" editable="bottom">
+                        <field name="name" />
+                        <field name="product_tmpl_id" />
+                        <field name="supplier_price" />
+                        <field name="min_qty" />
+                        <field name="stocking_status" />
+                        <field name="service_fee" />
+                        <field name="developing_cost" />
+                        <field name="royalties" />
+                        <field name="carton_quantity" />
+                        <field name="carton_weight" />
+                        <field name="carton_width" />
+                        <field name="carton_length" />
+                        <field name="carton_heigth" />
+                        <field name="carton_volume" />
+                        <field name="porc_teu" />
+                </tree>
+            </field>
+        </record>
+
+    <record id="productsupplier_search_view" model="ir.ui.view">
+        <field name="name">Product Supplier - Search</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="arch" type="xml">
+	    <search string="Search Product/Supplier Information">
+                <filter string='Product' icon="terp-mrp" domain="[]" context="{'group_by' : 'product_tmpl_id'}"/>
+		<filter string='Supplier' icon="terp-mrp" domain="[]" context="{'group_by' : 'name'}"/>
+                <!-- xpath expr="//filter[@string='Country']" position="after">
+			<separator />
+                        <filter string='Region' icon="terp-mrp" domain="[]" context="{'group_by' : 'region'}"/>
+                        <filter string='Ciudad' icon="terp-mrp" domain="[]" context="{'group_by' : 'city'}"/>
+                </xpath>
+                <xpath expr="//filter[@string='Suppliers']" position="after">
+        	        <filter string="Saldo Pendiente" icon="terp-camera_test"  domain="[('credit','>',0)]"
+				 help = "Clientes con saldo deudor" />
+                </xpath -->
+	    </search>
+        </field>
+    </record>
+
+
+        <record id="productsupplier_tree_view" model="ir.ui.view">
+            <field name="name">product.supplierinfo.treeview</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Product Supplier Info" editable="bottom">
+                        <field name="name" />
+                        <field name="product_tmpl_id" />
+                        <field name="supplier_price" />
+                        <field name="min_qty" />
+                        <field name="stocking_status" />
+                        <field name="royalties" />
+                        <field name="service_fee" />
+                        <field name="developing_cost" />
+                        <field name="carton_quantity" />
+                        <field name="carton_weight" />
+                        <field name="carton_width" />
+                        <field name="carton_length" />
+                        <field name="carton_heigth" />
+                        <field name="carton_volume" />
+                        <field name="porc_teu" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="productsupplier_view" model="ir.ui.view">
+            <field name="name">product.supplierinfo.view</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Product Supplier Info">
+                    <group col="6" colspan="4">
+                        <field name="name"/>
+                        <field name="product_tmpl_id"/>
+                        <field name="supplier_price"/>
+                        <field name="min_qty" />
+                        <field name="stocking_status" />
+                        <field name="service_fee" />
+                        <field name="developing_cost" />
+                        <field name="carton_quantity" />
+                        <field name="carton_weight" />
+                        <field name="carton_width" />
+                        <field name="carton_length" />
+                        <field name="carton_heigth" />
+                        <field name="carton_volume" />
+                        <field name="porc_teu" />
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_productsupplier_form" model="ir.actions.act_window">
+            <field name="name">Product Supplier Info</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.supplierinfo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="productsupplier_tree_view"/>
+            <field name="search_view_id" ref="productsupplier_search_view"/>
+        </record>
+
+        <menuitem id="menu_productsupplier_id" name="Product Supplier" parent="purchase.menu_procurement_management_product"
+			 sequence="5" action="action_productsupplier_form" />
+
+
+    </data>
+</openerp>

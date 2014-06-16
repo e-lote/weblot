@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- record model="ir.ui.view" id="view_purchase_order_form">
+            <field name="name">purchase.order.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="po_merge.purchase_exception_form_view"/>
+            <field name="arch" type="xml">
+                <data>
+	                <field name="exception_ids" position="before">
+        	                <field name="carton_quantity" />
+                	</field>
+
+                </data> 
+            </field>
+        </record -->
+
+        <record model="ir.ui.view" id="view_purchase_order_weblot_form">
+            <field name="name">purchase.order.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+                        <field name="date_planned" position="before">
+                                <field name="product_state" />
+        	                <field name="carton_quantity" />
+        	                <field name="carton_volume" />
+        	                <field name="porc_teu" />
+        	                <field name="additional_cost" />
+        	                <!-- field name="royalties" />
+        	                <field name="developing_cost" / -->
+                        </field>
+                        <field name="price_unit" position="attributes">
+                                <attribute name="readonly">1</attribute>
+                        </field>
+                </data>
+            </field>
+        </record>
+
+      
+    </data>
+</openerp>
