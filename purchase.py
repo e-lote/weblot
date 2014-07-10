@@ -201,8 +201,8 @@ class purchase_order_line(osv.osv):
         account_tax = self.pool.get('account.tax')
 
         # - check for the presence of partner_id and pricelist_id
-        #if not partner_id:
-        #    raise osv.except_osv(_('No Partner!'), _('Select a partner in purchase order to choose a product.'))
+        if not partner_id:
+            raise osv.except_osv(_('No Partner!'), _('Select a partner in purchase order to choose a product.'))
         #if not pricelist_id:
         #    raise osv.except_osv(_('No Pricelist !'), _('Select a price list in the purchase order form before choosing a product.'))
 
@@ -240,8 +240,10 @@ class purchase_order_line(osv.osv):
 
         supplierinfo = False
         supplier_price = 0
-	if not product.seller_ids:
+	if not product.seller_ids or \
+		not product_supplierinfo.search(cr,uid,[('name','=',partner_id),('product_tmpl_id','=',product.product_tmpl_id.id)]):
         	raise osv.except_osv(_('No Supplier  Info !'), _('Product has no supplier information.'))
+	
 
         supplierinfo = False
         for supplier in product.seller_ids:
