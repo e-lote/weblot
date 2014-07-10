@@ -11,6 +11,7 @@
                         <field name="name" />
                         <field name="product_tmpl_id" />
                         <field name="supplier_price" />
+                        <field name="isbn" />
                         <field name="min_qty" />
                         <field name="stocking_status" />
                         <field name="service_fee" />
@@ -56,6 +57,7 @@
                 <tree string="Product Supplier Info" editable="bottom">
                         <field name="name" />
                         <field name="product_tmpl_id" />
+                        <field name="isbn" />
                         <field name="supplier_price" />
                         <field name="min_qty" />
                         <field name="stocking_status" />
@@ -82,6 +84,7 @@
                     <group col="6" colspan="4">
                         <field name="name"/>
                         <field name="product_tmpl_id"/>
+                        <field name="isbn" />
                         <field name="supplier_price"/>
                         <field name="min_qty" />
                         <field name="stocking_status" />

@@ -6,6 +6,37 @@ class product_supplierinfo(osv.osv):
 	_name = "product.supplierinfo"
 	_inherit = "product.supplierinfo"
 
+	def _fnct_isbn(self, cr, uid, ids, field_name, args, context=None):
+        	if context is None:
+                	context = {}
+	        res = {}
+		product = self.pool.get('product.product')
+        	for line in self.browse(cr, uid, ids, context=context):
+	                product_id = product.search(cr,uid,[('product_tmpl_id','=',line.id)])
+			product_obj = product.browse(cr,uid,product_id)
+                	if product_obj:
+        	                res[line.id] = product_obj[0].ean13
+                	else:
+                        	res[line.id] = ''
+
+	        return res
+
+	def _fnct_search_isbn(self, cursor, user, obj, name, args, context=None):
+        	if not len(args):
+	            return []
+        	for arg in args:
+			if arg[0] == 'isbn':
+				condicion = arg[1]
+				argumento = "'" + arg[2] + "'"
+
+	        cursor.execute("SELECT a.id FROM product_product a "+ \
+                	"WHERE a.ean13 " + condicion + " " + argumento)
+	        res = cursor.fetchall()
+		res.extend(cursor.fetchall())
+	        if not res:
+        	    return [('id', '=', 0)]
+	        return [('id', 'in', [x[0] for x in res])]
+
 	_columns = {
 		'supplier_price': fields.float('Supplier Price'),
 		'minimum_production': fields.float('Minimum Production'),
@@ -20,29 +51,8 @@ class product_supplierinfo(osv.osv):
 		'carton_heigth': fields.float('Carton Heigth'),
 		'carton_volume': fields.float('Carton Volume'),
 		'porc_teu': fields.float('% TEU'),
+		'isbn': fields.function(_fnct_isbn,string='ISBN',type='char',fnct_search=_fnct_search_isbn),
 		}
        
 product_supplierinfo()
 
-"""
-class product_packaging(osv.osv):
-	_name = 'product.packaging'
-	_inherit = 'product.packaging'
-
-	_columns = {
-		porc_teu: fields.float('% TEU'),
-		}
-
-	def _check_percent(self, cr, uid, ids, context=None):
-		obj = self.browse(cr, uid, ids[0], context=context)
-		if ( obj.porc_teu < 0.0 or obj.porc_teu > 100.0):
-			return False
-		return True
-
-	_constraints = [
-        	(_check_percent, 'Percentages for  between 0 and 100.', ['porc_teu']),
-	]
-
-
-product_product()
-"""
