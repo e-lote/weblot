@@ -10,9 +10,11 @@
                 <tree string="Product Supplier Info" editable="bottom">
                         <field name="name" />
                         <field name="product_tmpl_id" />
-                        <field name="supplier_price" />
+                        <field name="default_code" />
                         <field name="isbn" />
+                        <field name="minimum_production" />
                         <field name="min_qty" />
+                        <field name="supplier_price" />
                         <field name="stocking_status" />
                         <field name="service_fee" />
                         <field name="developing_cost" />
@@ -57,8 +59,10 @@
                 <tree string="Product Supplier Info" editable="bottom">
                         <field name="name" />
                         <field name="product_tmpl_id" />
+                        <field name="default_code" />
                         <field name="isbn" />
                         <field name="supplier_price" />
+                        <field name="minimum_production" />
                         <field name="min_qty" />
                         <field name="stocking_status" />
                         <field name="royalties" />
@@ -84,8 +88,10 @@
                     <group col="6" colspan="4">
                         <field name="name"/>
                         <field name="product_tmpl_id"/>
+                        <field name="default_code" />
                         <field name="isbn" />
-                        <field name="supplier_price"/>
+                        <field name="supplier_price" />
+                        <field name="minimum_production" />
                         <field name="min_qty" />
                         <field name="stocking_status" />
                         <field name="service_fee" />
