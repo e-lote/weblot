@@ -69,6 +69,19 @@ class purchase_order_line(osv.osv):
     	return super(purchase_order_line, self).create(cr, uid, vals, context=context)
 
 
+    def _amount_line(self, cr, uid, ids, prop, arg, context=None):
+	# import pdb;pdb.set_trace()
+        res = {}
+        cur_obj=self.pool.get('res.currency')
+        tax_obj = self.pool.get('account.tax')
+        for line in self.browse(cr, uid, ids, context=context):
+            taxes = tax_obj.compute_all(cr, uid, line.taxes_id, line.price_unit, line.product_qty, line.product_id, line.order_id.partner_id)
+            cur = line.order_id.pricelist_id.currency_id
+            res[line.id] = cur_obj.round(cr, uid, cur, taxes['total'])+line.additional_cost
+        return res
+
+
+
     def _fnct_line_product_state(self, cr, uid, ids, field_name, args, context=None):
 
         if context is None:
@@ -167,6 +180,7 @@ class purchase_order_line(osv.osv):
 
 
     _columns = {
+	        'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
 		'product_state': fields.function(_fnct_line_product_state, string='Product State',type='char'),
                 'carton_quantity': fields.function(_fnct_po_carton_quantity,string='Carton Quantity',type='float'),
                 'carton_volume': fields.function(_fnct_po_carton_volume,string='Carton Volume',type='float'),
