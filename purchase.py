@@ -131,7 +131,7 @@ class purchase_order_line(osv.osv):
 		if supplier_id:
 			supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0]
 			if supplier.service_fee > 0:
-				res[line.id] = line.product_qty * (supplier.supplier_price + supplier.developing_cost + supplier.royalties + \
+				res[line.id] = line.product_qty * ( supplier.developing_cost + supplier.royalties + \
 				(supplier.supplier_price * supplier.service_fee/100 ))
 			else:
 				res[line.id] = 0
