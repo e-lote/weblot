@@ -40,18 +40,32 @@ class purchase_order_line(osv.osv):
     _inherit = 'purchase.order.line'
 
     def write(self, cr, uid, ids, vals, context=None):
-        if 'price_unit' in vals:
+	if 'boxes' in vals:
 		obj = self.browse(cr,uid,ids)
-		order_id = self.pool.get('purchase.order').search(cr,uid,obj.order_id.id)
+		order_id = obj[0].order_id.id
 		if order_id:
 			order = self.pool.get('purchase.order').browse(cr,uid,order_id)
 			partner_id = order.partner_id.id
 
 			product_supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,\
-				[('product_tmpl_id','=',obj.product_id.product_tmpl_id.id),('name','=',partner_id)])
+				[('product_tmpl_id','=',obj[0].product_id.product_tmpl_id.id),('name','=',partner_id)])
 			if product_supplier_id:
-				product_supplier = self.pool.get('product.supplierinfo').browse(cr,uid,product_supplier_id)			
+				product_supplier = self.pool.get('product.supplierinfo').browse(cr,uid,product_supplier_id)[0]			
 				vals['price_unit'] = product_supplier.supplier_price
+				vals['product_qty'] = product_supplier.carton_quantity * vals['boxes']
+        if 'price_unit' in vals:
+		obj = self.browse(cr,uid,ids)
+		order_id = obj[0].order_id.id
+		if order_id:
+			order = self.pool.get('purchase.order').browse(cr,uid,order_id)
+			partner_id = order.partner_id.id
+
+			product_supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,\
+				[('product_tmpl_id','=',obj[0].product_id.product_tmpl_id.id),('name','=',partner_id)])
+			if product_supplier_id:
+				product_supplier = self.pool.get('product.supplierinfo').browse(cr,uid,product_supplier_id)[0]			
+				vals['price_unit'] = product_supplier.supplier_price
+				vals['product_qty'] = product_supplier.carton_quantity * vals['boxes']
     	return super(purchase_order_line, self).write(cr, uid, ids, vals, context=context)
 
     def create(self, cr, uid, vals, context=None):
@@ -66,6 +80,7 @@ class purchase_order_line(osv.osv):
 		if product_supplier_id:
 			product_supplier = self.pool.get('product.supplierinfo').browse(cr,uid,product_supplier_id)
 			vals['price_unit'] = product_supplier[0].supplier_price
+			vals['product_qty'] = product_supplier[0].carton_quantity * vals['boxes']
     	return super(purchase_order_line, self).create(cr, uid, vals, context=context)
 
 
@@ -180,6 +195,7 @@ class purchase_order_line(osv.osv):
 
 
     _columns = {
+		'boxes': fields.integer('Boxes',required=True),
 	        'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
 		'product_state': fields.function(_fnct_line_product_state, string='Product State',type='char'),
                 'carton_quantity': fields.function(_fnct_po_carton_quantity,string='Carton Quantity',type='float'),
@@ -190,6 +206,10 @@ class purchase_order_line(osv.osv):
                 # 'developing_cost': fields.function(_fnct_po_developing_cost,string='Developing Cost',type='float'),
                 'additional_cost': fields.function(_fnct_po_additional_cost,string='Additional Cost',type='float'),
 	        # 'price_unit': fields.float('Unit Price', required=True, readonly=True, digits_compute= dp.get_precision('Product Price')),
+	}
+
+    _defaults = {
+	'boxes': 0,
 	}
 
 

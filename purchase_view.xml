@@ -23,6 +23,7 @@
             <field name="arch" type="xml">
                 <data>
                         <field name="date_planned" position="before">
+				<field name="boxes" />
                                 <field name="product_state" />
         	                <field name="carton_quantity" />
         	                <field name="carton_volume" />
@@ -32,6 +33,9 @@
         	                <field name="developing_cost" / -->
                         </field>
                         <field name="price_unit" position="attributes">
+                                <attribute name="readonly">1</attribute>
+                        </field>
+                        <field name="product_qty" position="attributes">
                                 <attribute name="readonly">1</attribute>
                         </field>
                 </data>
