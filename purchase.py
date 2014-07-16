@@ -35,6 +35,30 @@ import openerp.addons.decimal_precision as dp
 from openerp.osv.orm import browse_record, browse_null
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, DATETIME_FORMATS_MAP
 
+class purchase_order(osv.osv):
+	_name = 'purchase.order'
+	_inherit = 'purchase.order'
+
+	def _fnct_po_total_volume(self, cr, uid, ids, field_name, args, context=None):
+		if context is None:
+			context = {}
+		res = {}
+		obj = self.browse(cr,uid,ids,context=context)
+		total_volume = 0
+		for line in obj[0].order_line:
+			total_volume = total_volume + line.porc_teu
+		res[obj[0].id] = total_volume
+
+		return res
+###############################################################################################################################
+
+	_columns = {
+                'total_volume': fields.function(_fnct_po_total_volume,string='Volume (m3)',type='float'),
+		}
+
+
+purchase_order()
+
 class purchase_order_line(osv.osv):
     _name = 'purchase.order.line'
     _inherit = 'purchase.order.line'
@@ -188,7 +212,7 @@ class purchase_order_line(osv.osv):
 			supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0]
 			if supplier.carton_quantity > 0:
 				# res[line.id] = math.ceil(line.product_qty / supplier.carton_quantity) * supplier.porc_teu
-				res[line.id] = math.ceil(line.boxes * supplier.carton_volume)
+				res[line.id] = line.boxes * supplier.carton_volume
 			else:
 				res[line.id] = 0
 
