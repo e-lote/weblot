@@ -123,7 +123,7 @@ class purchase_order_line(osv.osv):
 		if supplier_id:
 			supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0]
 			if supplier.carton_quantity > 0:
-				res[line.id] = (math.ceil(line.product_qty / supplier.carton_quantity)) * supplier.carton_volume
+				res[line.id] = supplier.carton_volume
 			else:
 				res[line.id] = 0
 
@@ -187,7 +187,8 @@ class purchase_order_line(osv.osv):
 		if supplier_id:
 			supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0]
 			if supplier.carton_quantity > 0:
-				res[line.id] = math.ceil(line.product_qty / supplier.carton_quantity) * supplier.porc_teu
+				# res[line.id] = math.ceil(line.product_qty / supplier.carton_quantity) * supplier.porc_teu
+				res[line.id] = math.ceil(line.boxes * supplier.carton_volume)
 			else:
 				res[line.id] = 0
 
