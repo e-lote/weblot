@@ -31,11 +31,12 @@
 					</h2>
 				</div>
 			</field>
-                        <field name="date_planned" position="before">
+                        <field name="product_qty" position="before">
+				<field name="isbn" />
 				<field name="boxes" />
-                                <field name="product_state" />
+                                <!-- field name="product_state" / -->
         	                <field name="carton_quantity" />
-        	                <field name="carton_volume" />
+        	                <!-- field name="carton_volume" / -->
         	                <field name="porc_teu" />
         	                <field name="additional_cost" />
         	                <!-- field name="royalties" />
@@ -47,6 +48,8 @@
                         <field name="product_qty" position="attributes">
                                 <attribute name="readonly">1</attribute>
                         </field>
+			<field name="taxes_id" position="replace" />
+			<field name="date_planned" position="replace" />
                 </data>
             </field>
         </record>

@@ -33,7 +33,7 @@
     'data': [
 	'product_view.xml',
 	'purchase_view.xml',
-	# 'partner_view.xml',
+	# 'purchase_report.xml',
     ],
     'demo_xml': [
     ],
