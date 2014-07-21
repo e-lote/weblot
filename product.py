@@ -43,7 +43,7 @@ class product_supplierinfo(osv.osv):
 	        res = {}
 		product = self.pool.get('product.product')
         	for line in self.browse(cr, uid, ids, context=context):
-	                product_id = product.search(cr,uid,[('product_tmpl_id','=',line.id)])
+	                product_id = product.search(cr,uid,[('product_tmpl_id','=',line.product_tmpl_id.id)])
 			product_obj = product.browse(cr,uid,product_id)
                 	if product_obj:
         	                res[line.id] = product_obj[0].ean13
