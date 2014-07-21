@@ -39,6 +39,7 @@ class purchase_order(osv.osv):
 	_name = 'purchase.order'
 	_inherit = 'purchase.order'
 
+###############################################################################################################################
 	def _fnct_po_total_volume(self, cr, uid, ids, field_name, args, context=None):
 		if context is None:
 			context = {}
@@ -51,9 +52,21 @@ class purchase_order(osv.osv):
 
 		return res
 ###############################################################################################################################
+	def _fnct_po_total_weight(self, cr, uid, ids, field_name, args, context=None):
+		if context is None:
+			context = {}
+		res = {}
+		obj = self.browse(cr,uid,ids,context=context)
+		total_weight = 0
+		for line in obj[0].order_line:
+			total_weight = total_weight + line.weight
+		res[obj[0].id] = total_weight
+
+		return res
 
 	_columns = {
                 'total_volume': fields.function(_fnct_po_total_volume,string='Volume (m3)',type='float'),
+                'total_weight': fields.function(_fnct_po_total_weight,string='Weight (kg)',type='float'),
 		}
 
 
@@ -197,6 +210,9 @@ class purchase_order_line(osv.osv):
 				res[line.id] = 0
 	return res
 
+
+
+###################################################################################################################################
     def _fnct_po_porc_teu(self, cr, uid, ids, field_name, args, context=None):
 	if context is None:
 		context = {}
@@ -217,6 +233,27 @@ class purchase_order_line(osv.osv):
 				res[line.id] = 0
 
 	return res
+###################################################################################################################################
+    def _fnct_pol_weight(self, cr, uid, ids, field_name, args, context=None):
+	if context is None:
+		context = {}
+	res = {}
+	for line in self.browse(cr, uid, ids, context=context):
+		product_id = line.product_id.id
+		product_tmpl_id = line.product_id.product_tmpl_id.id
+		order = self.pool.get('purchase.order').browse(cr,uid,line.order_id.id)
+		partner_id = order.partner_id.id
+		supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,[('name','=',partner_id),\
+					('product_tmpl_id','=',product_tmpl_id)])
+		if supplier_id:
+			supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0]
+			if supplier.carton_weight > 0:
+				# res[line.id] = math.ceil(line.product_qty / supplier.carton_quantity) * supplier.porc_teu
+				res[line.id] = line.boxes * supplier.carton_weight
+			else:
+				res[line.id] = 0
+
+	return res
 
 
     _columns = {
@@ -227,6 +264,7 @@ class purchase_order_line(osv.osv):
                 'carton_quantity': fields.function(_fnct_po_carton_quantity,string='Carton Quantity',type='float'),
                 'carton_volume': fields.function(_fnct_po_carton_volume,string='Carton Volume',type='float'),
                 'porc_teu': fields.function(_fnct_po_porc_teu,string='% TEU',type='float'),
+                'weight': fields.function(_fnct_pol_weight,string='Weight',type='float'),
                 # 'service_fee': fields.function(_fnct_po_service_fee,string='Service Fee',type='float'),
                 # 'royalties': fields.function(_fnct_po_service_fee,string='Royalties',type='float'),
                 # 'developing_cost': fields.function(_fnct_po_developing_cost,string='Developing Cost',type='float'),

@@ -30,6 +30,17 @@
 						<field name="total_volume" />	</span>
 					</h2>
 				</div>
+				<div colspan="2">
+					<br />
+					<h2>
+						<span>Total Weight (kg):
+						<field name="total_weight" />	</span>
+					</h2>
+				</div>
+
+
+
+
 			</field>
                         <field name="product_qty" position="before">
 				<field name="isbn" />
@@ -37,8 +48,9 @@
                                 <!-- field name="product_state" / -->
         	                <field name="carton_quantity" />
         	                <!-- field name="carton_volume" / -->
-        	                <field name="porc_teu" />
+        	                <!-- field name="porc_teu" / -->
         	                <field name="additional_cost" />
+        	                <field name="weight" />
         	                <!-- field name="royalties" />
         	                <field name="developing_cost" / -->
                         </field>
