@@ -2,6 +2,23 @@
 <openerp>
     <data>
 
+        <record model="ir.ui.view" id="product_elote_kanban_view">
+            <field name="name">Product Kanban</field>
+            <field name="model">product.product</field>
+	    <field name="inherit_id" ref="product.product_kanban_view"/>
+            <field name="arch" type="xml">
+		<data>
+                    <field name="lst_price" position="after">
+				<field name="ean13"/>
+		    </field>
+	                <ul position="inside">
+                 	   <li>ISBN <field name="ean13"/> </li>
+	                </ul>
+		</data>
+            </field>
+        </record>
+
+
         <record id="productsupplier_tree_view" model="ir.ui.view">
             <field name="name">product.supplierinfo.treeview</field>
             <field name="model">product.supplierinfo</field>

@@ -67,6 +67,15 @@
                                 <attribute name="invisible">1</attribute>
 			</field>
 			<!-- field name="date_planned" position="replace" / -->
+			<notebook>
+				<page string="Volumetrics">
+					<field name="order_line">
+						<field name="description" position="attributes">
+							<attribute name="readonly">1</attribute>
+						</field>
+					</field>
+				</page>
+			</notebook>
                 </data>
             </field>
         </record>
