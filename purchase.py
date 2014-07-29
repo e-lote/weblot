@@ -64,9 +64,26 @@ class purchase_order(osv.osv):
 
 		return res
 
+        def write(self, cr, uid, ids, vals, context=None):
+		# sequence_id = self.pool.get('ir.sequence').search('name','=','E-Lote')
+		#sequence_id = self.pool.get('ir.sequence').search('prefix','=','LOT')
+		#if not sequence_id:
+
+		if 'delivered' in vals.keys():
+			vals['state'] = 'delivered'
+		if 'in_transit' in vals.keys():
+			vals['state'] = 'in_transit'
+		if 'not_valid' in vals.keys():
+			vals['state'] = 'not_valid'
+
+        	return super(purchase_order, self).write(cr, uid, ids, vals, context=context)
+
 	_columns = {
                 'total_volume': fields.function(_fnct_po_total_volume,string='Volume (m3)',type='float'),
                 'total_weight': fields.function(_fnct_po_total_weight,string='Weight (kg)',type='float'),
+		'in_transit': fields.boolean('In transit'),
+		'delivered': fields.boolean('Delivered'),
+		'not_valid': fields.boolean('Not Valid'),
 		}
 
 
@@ -379,7 +396,8 @@ class purchase_order_line(osv.osv):
         taxes = account_tax.browse(cr, uid, map(lambda x: x.id, product.supplier_taxes_id))
         fpos = fiscal_position_id and account_fiscal_position.browse(cr, uid, fiscal_position_id, context=context) or False
         taxes_ids = account_fiscal_position.map_tax(cr, uid, fpos, taxes)
-        res['value'].update({'price_unit': price, 'taxes_id': taxes_ids})
+        res['value'].update({'price_unit': price, 'taxes_id': taxes_ids,'isbn': product.ean13})
+	# import pdb;pdb.set_trace()
 
         return res
 

@@ -22,6 +22,13 @@
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
                 <data>
+			<field name="shipped" position="after">
+				<group>
+					<field name="in_transit" attrs="{'readonly':[('state','not in','draft')] }"/>
+					<field name="delivered" attrs="{'readonly':[('state','not in','in_transit')] }"/>
+					<field name="not_valid" attrs="{'readonly':[('state','not in','delivered')] }"/>
+				</group>
+			</field>
                         <field name="partner_ref" position="after">
 				<field name="create_uid" />
 				<div colspan="2">
@@ -52,9 +59,7 @@
         	                <!-- field name="royalties" />
         	                <field name="developing_cost" / -->
                         </field>
-                        <field name="price_unit" position="attributes">
-                                <attribute name="readonly">1</attribute>
-                        </field>
+                        <field name="price_unit" invisible="1" />
                         <field name="product_qty" position="attributes">
                                 <attribute name="readonly">1</attribute>
                         </field>
@@ -64,17 +69,6 @@
 			<field name="date_planned" position="attributes">
                                 <attribute name="invisible">1</attribute>
 			</field>
-			<!-- notebook>
-				<page string="Volumetrics">
-					<field name="order_line">
-						<field name="description" position="attributes">
-							<attribute name="readonly">1</attribute>
-						</field>
-						<field name="date_planned" position="replace" />
-						<field name="price_unit" position="replace" />
-					</field>
-				</page>
-			</notebook -->
                 </data>
             </field>
         </record>
