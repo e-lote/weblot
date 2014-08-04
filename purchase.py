@@ -275,7 +275,7 @@ class purchase_order_line(osv.osv):
 
     _columns = {
 		'boxes': fields.integer('Boxes',required=True),
-		'isbn': fields.related('product_id','ean13',type="char",string="ISBN"),
+		'isbn': fields.related('product_id','ean13',type="char",string="ISBN",readonly=True),
 	        'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
 		'product_state': fields.function(_fnct_line_product_state, string='Product State',type='char'),
                 'carton_quantity': fields.function(_fnct_po_carton_quantity,string='Carton Quantity',type='float'),

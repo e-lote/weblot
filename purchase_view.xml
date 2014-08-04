@@ -48,7 +48,9 @@
 
 			</field>
                         <field name="product_qty" position="before">
-				<field name="isbn" />
+				<field name="isbn" position="attributes">
+                                	<attribute name="readonly">1</attribute>
+				</field>
 				<field name="boxes" />
                                 <!-- field name="product_state" / -->
         	                <field name="carton_quantity" />
