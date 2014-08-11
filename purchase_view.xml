@@ -10,9 +10,12 @@
                 <data>
 			<field name="shipped" position="after">
 				<group>
-					<field name="in_transit" attrs="{'readonly':[('state','not in','draft')] }"/>
-					<field name="delivered" attrs="{'readonly':[('state','not in','in_transit')] }"/>
-					<field name="not_valid" attrs="{'readonly':[('state','not in','delivered')] }"/>
+					<field name="in_transit" attrs="{'readonly':[('state','not in','draft')] }" 
+						groups="purchase.group_purchase_manager"/>
+					<field name="delivered" attrs="{'readonly':[('state','not in','in_transit')] }"
+						groups="purchase.group_purchase_manager"/>
+					<field name="not_valid" attrs="{'readonly':[('state','not in','delivered')] }" 
+						groups="purchase.group_purchase_manager"/>
 				</group>
 			</field>
                         <field name="partner_ref" position="after">
