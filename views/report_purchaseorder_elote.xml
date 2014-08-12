@@ -57,10 +57,10 @@
                                 <th><strong>ISBN</strong></th>
                                 <th><strong>Description</strong></th>
                                 <th><strong>Boxes</strong></th>
+                                <th class="text-right"><strong>Units</strong></th>
                                 <th class="text-center"><strong>Additional Cost</strong></th>
-                                <th class="text-right"><strong>Qty</strong></th>
                                 <th class="text-right"><strong>Unit Price</strong></th>
-                                <th class="text-right"><strong>Net Price</strong></th>
+                                <th class="text-right"><strong>SubTotal</strong></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -74,12 +74,12 @@
                                 <td>
                                     <span t-field="line.boxes"/>
                                 </td>
-                                <td>
-                                    <span t-field="line.additional_cost"/>
-                                </td>
                                 <td class="text-right">
                                     <span t-field="line.product_qty"/>
                                     <span t-field="line.product_uom.name" groups="product.group_uom"/>
+                                </td>
+                                <td>
+                                    <span t-field="line.additional_cost"/>
                                 </td>
                                 <td class="text-right">
                                     <span t-field="line.price_unit"/>
