@@ -33,8 +33,9 @@
     'data': [
 	'product_view.xml',
 	'purchase_view.xml',
-	'views/report_purchaseorder.xml',
-	# 'purchase_report.xml',
+	'views/report_purchaseorder_elote.xml',
+	'views/report_purchasequotation_elote.xml',
+	'purchase_report.xml',
     ],
     'demo_xml': [
     ],
