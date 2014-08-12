@@ -75,7 +75,7 @@
                                     <span t-field="line.boxes"/>
                                 </td>
                                 <td>
-                                    <span t-field="line."/>
+                                    <span t-field="line.additional_cost"/>
                                 </td>
                                 <td class="text-right">
                                     <span t-field="line.product_qty"/>
