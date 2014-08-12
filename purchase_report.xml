@@ -10,13 +10,5 @@
             file="weblot.report_purchaseorder_elote" 
         />
 
-        <report 
-            string="e-Lote Request for Quotation" 
-            id="report_purchase_quotation_elote" 
-            model="purchase.order" 
-            report_type="qweb-pdf"
-            name="weblot.report_purchasequotation_elote" 
-            file="weblot.report_purchasequotation_elote"
-        />
     </data>
 </openerp>
