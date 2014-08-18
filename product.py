@@ -29,7 +29,7 @@ class product_supplierinfo(osv.osv):
 				condicion = arg[1]
 				argumento = "'" + arg[2] + "'"
 
-	        cursor.execute("SELECT a.id FROM product_product a "+ \
+	        cursor.execute("SELECT b.id FROM product_supplierinfo b inner join product_product a on b.product_tmpl_id = a.product_tmpl_id "+ \
                 	"WHERE a.default_code " + condicion + " " + argumento)
 	        res = cursor.fetchall()
 		res.extend(cursor.fetchall())
