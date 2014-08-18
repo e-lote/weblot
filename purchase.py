@@ -65,10 +65,6 @@ class purchase_order(osv.osv):
 		return res
 
         def write(self, cr, uid, ids, vals, context=None):
-		# sequence_id = self.pool.get('ir.sequence').search('name','=','E-Lote')
-		#sequence_id = self.pool.get('ir.sequence').search('prefix','=','LOT')
-		#if not sequence_id:
-
 		if 'delivered' in vals.keys():
 			vals['state'] = 'delivered'
 		if 'in_transit' in vals.keys():
