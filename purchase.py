@@ -75,6 +75,7 @@ class purchase_order(osv.osv):
         	return super(purchase_order, self).write(cr, uid, ids, vals, context=context)
 
 	_columns = {
+		'sb_origin': fields.related('create_uid','partner_id',type="many2one",relation="res.partner",string="SB Origin",readonly=True),
                 'total_volume': fields.function(_fnct_po_total_volume,string='Volume (m3)',type='float'),
                 'total_weight': fields.function(_fnct_po_total_weight,string='Weight (kg)',type='float'),
 		'in_transit': fields.boolean('In transit'),
