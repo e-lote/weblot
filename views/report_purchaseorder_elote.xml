@@ -65,13 +65,13 @@
                         </thead>
                         <tbody>
                             <tr t-foreach="o.order_line" t-as="line">
-                                <td>
+                                <td class="text-left">
                                     <span t-field="line.product_id.ean13"/>
                                 </td>
-                                <td>
+                                <td class="text-left">
                                     <span t-field="line.name"/>
                                 </td>
-                                <td>
+                                <td class="text-right">
                                     <span t-field="line.boxes"/>
                                 </td>
                                 <td class="text-right">
