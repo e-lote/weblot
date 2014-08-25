@@ -22,7 +22,7 @@
 
 {
     'name': 'WebLot Customizations',
-    'version': '0.1.2.6',
+    'version': '0.1.2.7',
     'category': 'Tools',
     'complexity': "easy",
     'description': "",
