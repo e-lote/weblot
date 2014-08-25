@@ -51,8 +51,7 @@
                         </div>
                     </div>
 
-                    <!-- table class="table table-condensed" -->
-                    <table>
+                    <table class="table table-condensed">
                         <thead>
                             <tr>
                                 <th><strong>ISBN</strong></th>
