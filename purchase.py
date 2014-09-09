@@ -212,16 +212,21 @@ class purchase_order_line(osv.osv):
 	for line in self.browse(cr, uid, ids, context=context):
 		product_id = line.product_id.id
 		product_tmpl_id = line.product_id.product_tmpl_id.id
+		#import pdb;pdb.set_trace()
 		order = self.pool.get('purchase.order').browse(cr,uid,line.order_id.id)
-		partner_id = order.partner_id.id
-		supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,[('name','=',partner_id),\
-					('product_tmpl_id','=',product_tmpl_id)])
-		if supplier_id:
-			supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0]
-			if supplier.carton_quantity > 0:
-				res[line.id] = supplier.carton_quantity
-			else:
-				res[line.id] = 0
+                try:
+		    partner_id = order.partner_id.id
+		    supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,[('name','=',partner_id),\
+		    			('product_tmpl_id','=',product_tmpl_id)])
+		    if supplier_id:
+		    	supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0]
+		    	if supplier.carton_quantity > 0:
+		    		res[line.id] = supplier.carton_quantity
+		    	else:
+		    		res[line.id] = 0
+                except:
+		    res[line.id] = 0
+		    pass
 	return res
 
 
