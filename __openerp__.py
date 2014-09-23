@@ -22,7 +22,7 @@
 
 {
     'name': 'WebLot Customizations',
-    'version': '0.1.2.12',
+    'version': '0.1.2.13',
     'category': 'Tools',
     'complexity': "easy",
     'description': "",
@@ -32,6 +32,7 @@
     'init_xml': [],
     'data': [
 	'product_view.xml',
+	'users_view.xml',
 	'purchase_view.xml',
 	'views/report_purchaseorder_elote.xml',
 	'views/report_purchasequotation_elote.xml',
