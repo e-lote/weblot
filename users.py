@@ -8,7 +8,7 @@ class res_users(osv.osv):
 	_inherit = "res.users"
 
 	_columns = {
-		'cp_id': fields.many2one('res.partner','Production Center')
+		'x_cp_id': fields.many2one('res.partner','Production Center')
 		}
 
 res_users()

@@ -10,7 +10,7 @@
 	        <data>
 			<field name="active" position="after">
 				<group>
-					<field name="cp_id" />
+					<field name="x_cp_id" />
 				</group>
 			</field>
 		</data>
