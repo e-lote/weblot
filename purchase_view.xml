@@ -35,13 +35,16 @@
 			</field>
                         <field name="partner_ref" position="after">
 				<field name="create_uid" />
+				<br />
 				<div colspan="4">
-					<br />
 					<h3>
 						<group>
 							<field name="total_volume" />
 							<field name="total_weight" />	
 						</group>
+				</div>
+				<div colspan="4">
+					<h3>
 						<group>
 							<field name="porc_teu1" />	
 							<field name="porc_teu2" />	
