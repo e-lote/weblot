@@ -37,20 +37,20 @@
 				<field name="create_uid" />
 				<div colspan="2">
 					<br />
-					<h2>
+					<h4>
 						<span>Total Volume (m3):
 						<field name="total_volume" />	</span>
 						<span>Total Weight (kg):
 						<field name="total_weight" />	</span>
-					</h2>
+					</h4>
 				</div>
 				<div colspan="4">
-					<h2>
+					<h4>
 						<span>Porc 1 TEU (%):
 						<field name="porc_teu1" />	</span>
 						<span>Porc 2 TEUs: (%):
 						<field name="porc_teu2" />	</span>
-					</h2>
+					</h4>
 				</div>
 
 			</field>
