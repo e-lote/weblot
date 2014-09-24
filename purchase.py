@@ -106,7 +106,7 @@ class purchase_order(osv.osv):
 		'sb_origin': fields.related('create_uid','partner_id',type="many2one",relation="res.partner",string="SB Origin",readonly=True),
                 'total_volume': fields.function(_fnct_po_total_volume,string='Volume (m3)',type='float'),
                 'porc_teu1': fields.function(_fnct_po_porc_teu1,string='Porc faltante 1 TEU',type='float'),
-                'porc_teu2': fields.function(_fnct_po_porc_teu1,string='Porc faltante 2 TEUs',type='float'),
+                'porc_teu2': fields.function(_fnct_po_porc_teu2,string='Porc faltante 2 TEUs',type='float'),
                 'total_volume': fields.function(_fnct_po_total_volume,string='Volume (m3)',type='float'),
                 'total_weight': fields.function(_fnct_po_total_weight,string='Weight (kg)',type='float'),
 		'in_transit': fields.boolean('In transit'),
