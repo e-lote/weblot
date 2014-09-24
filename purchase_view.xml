@@ -38,14 +38,22 @@
 				<div colspan="4">
 					<br />
 					<h3>
-						<span>Total Volume (m3):
+						<group>
+							<field name="total_volume" />
+							<field name="total_weight" />	
+						</group>
+						<group>
+							<field name="porc_teu1" />	
+							<field name="porc_teu2" />	
+						</group>
+						<!-- span>Total Volume (m3):
 						<field name="total_volume" />
 						Total Weight (kg):
 						<field name="total_weight" />	
 						Porc 1 TEU (%):
 						<field name="porc_teu1" />	
 						Porc 2 TEUs: (%):
-						<field name="porc_teu2" />	</span>
+						<field name="porc_teu2" />	</span -->
 					</h3>
 				</div>
 
