@@ -38,16 +38,14 @@
 				<field name="create_uid" />
 				</group>
 				<br />
-					<h3>
-						<group cols="4">
-							<field name="total_volume" />
-							<field name="total_weight" />	
-						</group>
-						<group cols="4">
-							<field name="porc_teu1" />	
-							<field name="porc_teu2" />	
-						</group>
-					</h3>
+					<group cols="4">
+						<field name="total_volume" />
+						<field name="total_weight" />	
+					</group>
+					<group cols="4">
+						<field name="porc_teu1" />	
+						<field name="porc_teu2" />	
+					</group>
 			</field>
                         <field name="product_qty" position="before">
 				<field name="isbn" position="attributes">
