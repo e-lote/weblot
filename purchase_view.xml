@@ -39,6 +39,8 @@
 						<group colspan="4">
 							<field name="total_volume" />
 							<field name="total_weight" />	
+						</group>
+						<group colspan="4">
 							<field name="porc_teu1" />	
 							<field name="porc_teu2" />	
 						</group>
