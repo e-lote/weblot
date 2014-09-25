@@ -22,9 +22,24 @@
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
                 <data>
-			<page string="RFQ & Bid" position="attributes">
-				<attribute name="invisible">1</attribute>
-			</page>
+			<notebook>	
+				<page string="RFQ &amp; Bid" position="attributes" >
+                                	<attribute name="invisible">1</attribute>
+				</page>
+			</notebook>	
+			<field name="incoterm_id" position="attributes" >
+                                	<attribute name="invisible">1</attribute>
+			</field>
+			<field name="bid_date" position="attributes" >
+                                	<attribute name="invisible">1</attribute>
+			</field>
+			<field name="bid_validity" position="attributes" >
+                                	<attribute name="invisible">1</attribute>
+			</field>
+			<field name="payment_term_id" position="attributes" >
+                                	<attribute name="invisible">1</attribute>
+			</field>
+
 			<field name="shipped" position="after">
 				<group>
 					<field name="in_transit" attrs="{'readonly':[('state','not in',('draft','consolidated'))] }" 
