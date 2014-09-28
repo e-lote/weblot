@@ -305,8 +305,20 @@ class purchase_order_line(osv.osv):
 
 	return res
 
+    def _fnct_sb_origin(self, cr, uid, ids, field_name, args, context=None):
+        	if context is None:
+                	context = {}
+	        res = {}
+        	for line in self.browse(cr, uid, ids, context=context):
+                	if line.order_id.sb_origin:
+        	                res[line.id] = line.order_id.sb_origin.id
+
+	        return res
+
+
 
     _columns = {
+	        'sb_origin': fields.function(_fnct_sb_origin, string='SB Origin'),
 		'boxes': fields.integer('Boxes',required=True),
 		'isbn': fields.related('product_id','ean13',type="char",string="ISBN",readonly=True),
 	        'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),

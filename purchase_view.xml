@@ -2,6 +2,25 @@
 <openerp>
     <data>
 
+        <record model="ir.ui.view" id="view_purchase_order_line_tree_view">
+            <field name="name">PO LINE View</field>
+            <field name="model">purchase.order.line</field>
+            <field name="arch" type="xml">
+		<tree string="PO Line">
+			<field name="order_id" />
+			<field name="sb_origin" />
+			<field name="product_id" />
+			<field name="isbn" />
+			<field name="boxes" />
+			<field name="product_qty" />
+			<field name="carton_quantity" />
+			<field name="carton_volume" />
+			<field name="weight" />
+			<field name="additional_cost" />
+		</tree>
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="purchase_order_tree_view">
             <field name="name">PO View</field>
             <field name="model">purchase.order</field>
@@ -97,6 +116,21 @@
                 </data>
             </field>
         </record>
+
+        <record id="action_report_purchase_order_lines" model="ir.actions.act_window">
+            <field name="name">Purchase Orders Lines</field>
+            <field name="res_model">purchase.order.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!-- field name="search_view_id" ref="view_report_purchase_order_weblot_filter"/ -->
+            <field name="view_id" ref="view_purchase_order_line_tree_view"/>
+        </record>
+
+        <menuitem name="Items"
+            groups="base.group_sale_salesman"
+            action="action_report_purchase_order_lines"
+            id="menu_po_line_tree" parent="purchase.menu_procurement_management" sequence="55"/>
+
 
       
     </data>
