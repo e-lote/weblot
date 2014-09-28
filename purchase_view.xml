@@ -127,7 +127,6 @@
         </record>
 
         <menuitem name="Items"
-            groups="base.group_sale_salesman"
             action="action_report_purchase_order_lines"
             id="menu_po_line_tree" parent="purchase.menu_procurement_management" sequence="55"/>
 
