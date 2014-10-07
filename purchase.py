@@ -112,6 +112,7 @@ class purchase_order(osv.osv):
 		'in_transit': fields.boolean('In transit'),
 		'delivered': fields.boolean('Delivered'),
 		'not_valid': fields.boolean('Not Valid'),
+		'cashflow': fields.binary('Cashflow'),
 		}
 
 
@@ -315,10 +316,21 @@ class purchase_order_line(osv.osv):
 
 	        return res
 
+    def _fnct_cp(self, cr, uid, ids, field_name, args, context=None):
+        	if context is None:
+                	context = {}
+	        res = {}
+        	for line in self.browse(cr, uid, ids, context=context):
+                	if line.order_id.partner_id:
+        	                res[line.id] = line.order_id.partner_id.id
+
+	        return res
+
 
 
     _columns = {
 	        'sb_origin': fields.function(_fnct_sb_origin, string='SB Origin'),
+	        'production_center': fields.function(_fnct_cp, string='Production Center'),
 		'boxes': fields.integer('Boxes',required=True),
 		'isbn': fields.related('product_id','ean13',type="char",string="ISBN",readonly=True),
 	        'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),

@@ -9,6 +9,7 @@
 		<tree string="PO Line">
 			<field name="order_id" />
 			<field name="sb_origin" />
+			<field name="production_center" />
 			<field name="product_id" />
 			<field name="isbn" />
 			<field name="boxes" />
@@ -60,7 +61,7 @@
 			</field>
 
 			<field name="shipped" position="after">
-				<group>
+				<group cols="4" colspan="4">
 					<field name="in_transit" attrs="{'readonly':[('state','not in',('draft','consolidated'))] }" 
 						groups="purchase.group_purchase_manager"/>
 					<!-- field name="delivered" attrs="{'readonly':[('state','not in','in_transit'),
@@ -117,6 +118,20 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="view_purchase_order_weblot_cashflow_form">
+            <field name="name">purchase.order.cashflow.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="group_ids" eval="[(6,0,[ref('group_elote_user')]),(6,0,[ref('group_elote_manager')])]"/>
+            <field name="arch" type="xml">
+                <data>
+                        <field name="date_approve" position="after">
+					<field name="cashflow"/>
+			</field>
+                </data>
+            </field>
+        </record>
+
         <record id="action_report_purchase_order_lines" model="ir.actions.act_window">
             <field name="name">Purchase Orders Lines</field>
             <field name="res_model">purchase.order.line</field>
@@ -129,8 +144,6 @@
         <menuitem name="Items"
             action="action_report_purchase_order_lines"
             id="menu_po_line_tree" parent="purchase.menu_procurement_management" sequence="55"/>
-
-
       
     </data>
 </openerp>
