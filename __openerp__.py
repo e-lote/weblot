@@ -31,6 +31,7 @@
     'depends': ['base','stock','product','purchase'],
     'init_xml': [],
     'data': [
+	'security.xml',
 	'product_view.xml',
 	'users_view.xml',
 	'purchase_view.xml',
