@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
 from openerp.osv import osv,fields
 
 class product_supplierinfo(osv.osv):
@@ -68,6 +69,13 @@ class product_supplierinfo(osv.osv):
         	    return [('id', '=', 0)]
 	        return [('id', 'in', [x[0] for x in res])]
 
+	def _get_active(self, cursor, user, objs, fields, args, context=None):
+                date = datetime.now().strftime('%Y-%m-%d')
+		res = {}
+                for info in self.browse(cursor, user, objs):
+                    res[info.id] = date < info.valid_to if info.valid_to else True
+		return res
+
 	_columns = {
 		'supplier_price': fields.float('Supplier Price'),
 		'minimum_production': fields.float('Minimum Production'),
@@ -84,6 +92,9 @@ class product_supplierinfo(osv.osv):
 		'porc_teu': fields.float('% TEU'),
 		'isbn': fields.function(_fnct_isbn,string='ISBN',type='char',fnct_search=_fnct_search_isbn),
 		'default_code': fields.function(_fnct_default_code,string='Default Code',type='char',fnct_search=_fnct_search_default_code),
+		'active': fields.function(_get_active, string='Active', type="boolean", store=True),
+                'valid_to': fields.date('Valid to'),
+                'valid_from': fields.date('Valid from'),
 		}
        
 product_supplierinfo()
