@@ -44,11 +44,12 @@ class purchase_order(osv.osv):
 		if context is None:
 			context = {}
 		res = {}
-		obj = self.browse(cr,uid,ids,context=context)
-		total_volume = 0
-		for line in obj[0].order_line:
-			total_volume = total_volume + line.porc_teu
-		res[obj[0].id] = total_volume
+
+                for obj in self.browse(cr,uid,ids,context=context):
+                    total_volume = 0
+                    for line in obj.order_line:
+                            total_volume = total_volume + line.porc_teu
+                    res[obj.id] = total_volume
 
 		return res
 ###############################################################################################################################
@@ -56,13 +57,14 @@ class purchase_order(osv.osv):
 		if context is None:
 			context = {}
 		res = {}
-		obj = self.browse(cr,uid,ids,context=context)
-		total_volume = obj[0].total_volume 
-		porc_teu = (1-(total_volume/30))*100
-		if porc_teu < 0:
-			res[obj[0].id] = -1
-		else:	
-			res[obj[0].id] = (1-(total_volume/30))*100
+
+                for obj in self.browse(cr,uid,ids,context=context):
+                    total_volume = obj.total_volume 
+                    porc_teu = (1-(total_volume/30))*100
+                    if porc_teu < 0:
+                            res[obj.id] = -1
+                    else:	
+			res[obj.id] = (1-(total_volume/30))*100
 
 		return res
 ###############################################################################################################################
@@ -70,13 +72,14 @@ class purchase_order(osv.osv):
 		if context is None:
 			context = {}
 		res = {}
-		obj = self.browse(cr,uid,ids,context=context)
-		total_volume = obj[0].total_volume 
-		porc_teu = (1-(total_volume/60))*100
-		if porc_teu < 0:
-			res[obj[0].id] = -1
-		else:	
-			res[obj[0].id] = (1-(total_volume/60))*100
+
+                for obj in self.browse(cr,uid,ids,context=context):
+                    total_volume = obj.total_volume 
+                    porc_teu = (1-(total_volume/60))*100
+                    if porc_teu < 0:
+                            res[obj.id] = -1
+                    else:	
+                            res[obj.id] = (1-(total_volume/60))*100
 
 		return res
 ###############################################################################################################################
@@ -84,11 +87,12 @@ class purchase_order(osv.osv):
 		if context is None:
 			context = {}
 		res = {}
-		obj = self.browse(cr,uid,ids,context=context)
-		total_weight = 0
-		for line in obj[0].order_line:
-			total_weight = total_weight + line.weight
-		res[obj[0].id] = total_weight
+
+                for obj in self.browse(cr,uid,ids,context=context):
+                    total_weight = 0
+                    for line in obj.order_line:
+                            total_weight = total_weight + line.weight
+                    res[obj.id] = total_weight
 
 		return res
 
