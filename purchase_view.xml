@@ -42,6 +42,17 @@
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
                 <data>
+			<button name="view_invoice" position="before" >
+				<button name="purchase_in_process" states="consolidated" string="Process"
+					groups="weblot.group_elote_production,weblot.group_elote_manager"/>
+				<button name="purchase_dispatch"   states="in_process"   string="Dispatch"
+					groups="weblot.group_elote_production,weblot.group_elote_manager"/>
+				<button name="purchase_receive"    states="dispatched"   string="Receive"
+					groups="weblot.group_elote_user,weblot.group_elote_manager"/>
+				<button name="purchase_not_valid"  states="consolidated,in_process" string="Invalidate"
+					groups="weblot.group_elote_production,weblot.group_elote_manager"/>
+			</button>
+
 			<notebook>	
 				<page string="RFQ &amp; Bid" position="attributes" >
                                 	<attribute name="invisible">1</attribute>

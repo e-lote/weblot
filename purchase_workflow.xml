@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="act_consolidated" model="workflow.activity">
+            <field name="wkf_id" ref="purchase.purchase_order"/>
+            <field name="name">consolidated</field>
+            <field name="kind">function</field>
+            <field name="action">write({'state':'consolidated'})</field>
+        </record>
+
+        <record id="act_not_valid" model="workflow.activity">
+            <field name="wkf_id" ref="purchase.purchase_order"/>
+            <field name="name">not_valid</field>
+            <field name="flow_stop">True</field>
+            <field name="kind">function</field>
+            <field name="action">write({'state':'not_valid'})</field>
+        </record>
+
+        <record id="act_in_process" model="workflow.activity">
+            <field name="wkf_id" ref="purchase.purchase_order"/>
+            <field name="name">in_process</field>
+            <field name="kind">function</field>
+            <field name="action">write({'state':'in_process'})</field>
+        </record>
+
+        <record id="act_dispatched" model="workflow.activity">
+            <field name="wkf_id" ref="purchase.purchase_order"/>
+            <field name="name">dispatched</field>
+            <field name="kind">function</field>
+            <field name="action">write({'state':'dispatched'})</field>
+        </record>
+
+
+        <record id="act_received" model="workflow.activity">
+            <field name="wkf_id" ref="purchase.purchase_order"/>
+            <field name="flow_stop">True</field>
+            <field name="name">received</field>
+            <field name="kind">function</field>
+            <field name="action">write({'state':'received'})</field>
+        </record>
+
+        <record id="trans_route_consolidated" model="workflow.transition">
+            <field name="act_from" ref="purchase.act_router"/>
+            <field name="act_to" ref="act_consolidated"/>
+            <field name="signal">purchase_consolidate</field>
+        </record>
+
+        <record id="trans_consolidated_not_valid" model="workflow.transition">
+            <field name="act_from" ref="act_consolidated"/>
+            <field name="act_to" ref="act_not_valid"/>
+            <field name="signal">purchase_not_valid</field>
+        </record>
+
+        <record id="trans_consolidated_in_process" model="workflow.transition">
+            <field name="act_from" ref="act_consolidated"/>
+            <field name="act_to" ref="act_in_process"/>
+            <field name="signal">purchase_in_process</field>
+        </record>
+
+        <record id="trans_in_process_not_valid" model="workflow.transition">
+            <field name="act_from" ref="act_in_process"/>
+            <field name="act_to" ref="act_not_valid"/>
+            <field name="signal">purchase_not_valid</field>
+        </record>
+
+        <record id="trans_in_process_dispatched" model="workflow.transition">
+            <field name="act_from" ref="act_in_process"/>
+            <field name="act_to" ref="act_dispatched"/>
+            <field name="signal">purchase_dispatch</field>
+        </record>
+
+        <record id="trans_in_dispatched_received" model="workflow.transition">
+            <field name="act_from" ref="act_dispatched"/>
+            <field name="act_to" ref="act_received"/>
+            <field name="signal">purchase_receive</field>
+        </record>
+
+    </data>
+</openerp>

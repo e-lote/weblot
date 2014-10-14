@@ -35,9 +35,31 @@ import openerp.addons.decimal_precision as dp
 from openerp.osv.orm import browse_record, browse_null
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, DATETIME_FORMATS_MAP
 
+from openerp.addons.purcharse.purchase import purchase_order as original_purchase_order
+
+
+original_purchase_order.STATE_SELECTION.extend([
+    ('consolidated', 'Consolidated'),
+    ('not_valid',    'Not Valid'),
+    ('in_process',   'In Process'),
+    ('dispatched',   'Dispatched'),
+    ('received',     'Received'),
+])
+
+
+
 class purchase_order(osv.osv):
 	_name = 'purchase.order'
 	_inherit = 'purchase.order'
+
+        _track = {
+            'state': {
+                'purchase.mt_rfq_consolidated': lambda self, cr, uid, obj, ctx=None: obj.state == 'consolidated',
+                'purchase.mt_rfq_in_process':   lambda self, cr, uid, obj, ctx=None: obj.state == 'in_process',
+                'purchase.mt_rfq_dispatched':   lambda self, cr, uid, obj, ctx=None: obj.state == 'dispatched',
+                'purchase.mt_rfq_received':     lambda self, cr, uid, obj, ctx=None: obj.state == 'received',
+            }
+        }
 
 ###############################################################################################################################
 	def _fnct_po_total_volume(self, cr, uid, ids, field_name, args, context=None):
@@ -96,15 +118,14 @@ class purchase_order(osv.osv):
 
 		return res
 
-        def write(self, cr, uid, ids, vals, context=None):
-		if 'delivered' in vals.keys():
-			vals['state'] = 'delivered'
-		if 'in_transit' in vals.keys():
-			vals['state'] = 'in_transit'
-		if 'not_valid' in vals.keys():
-			vals['state'] = 'not_valid'
-
-        	return super(purchase_order, self).write(cr, uid, ids, vals, context=context)
+        #def write(self, cr, uid, ids, vals, context=None):
+	#	if 'delivered' in vals.keys():
+	#		vals['state'] = 'delivered'
+	#	if 'in_transit' in vals.keys():
+	#		vals['state'] = 'in_transit'
+	#	if 'not_valid' in vals.keys():
+	#		vals['state'] = 'not_valid'
+        #	return super(purchase_order, self).write(cr, uid, ids, vals, context=context)
 
 	_columns = {
 		'sb_origin': fields.related('create_uid','partner_id',type="many2one",relation="res.partner",string="SB Origin",readonly=True),
@@ -113,12 +134,18 @@ class purchase_order(osv.osv):
                 'porc_teu2': fields.function(_fnct_po_porc_teu2,string='Porc faltante 2 TEUs',type='float'),
                 'total_volume': fields.function(_fnct_po_total_volume,string='Volume (m3)',type='float'),
                 'total_weight': fields.function(_fnct_po_total_weight,string='Weight (kg)',type='float'),
-		'in_transit': fields.boolean('In transit'),
-		'delivered': fields.boolean('Delivered'),
-		'not_valid': fields.boolean('Not Valid'),
 		'cashflow': fields.binary('Cashflow'),
+                'state': fields.selection(original_purchase_order.STATE_SELECTION, 'Status', readonly=True,
+                                          help="The status of the purchase order or the quotation request. "
+                                               "A request for quotation is a purchase order in a 'Draft' status. "
+                                               "Then the order has to be confirmed by the user, the status switch "
+                                               "to 'Confirmed'. Then the supplier must confirm the order to change "
+                                               "the status to 'Approved'. When the purchase order is paid and "
+                                               "received, the status becomes 'Done'. If a cancel action occurs in "
+                                               "the invoice or in the receipt of goods, the status becomes "
+                                               "in exception.",
+                                          select=True, copy=False),
 		}
-
 
 purchase_order()
 

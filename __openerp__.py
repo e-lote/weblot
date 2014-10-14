@@ -38,6 +38,7 @@
 	'views/report_purchaseorder_elote.xml',
 	'views/report_purchasequotation_elote.xml',
 	'purchase_report.xml',
+	'purchase_workflow.xml',
     ],
     'demo_xml': [
     ],
