@@ -31,11 +31,11 @@
                         <field name="isbn" />
                         <field name="minimum_production" />
                         <field name="min_qty" />
-                        <field name="supplier_price" />
+                        <field name="supplier_price" groups="weblot.group_elote_manager"/>
                         <field name="stocking_status" />
-                        <field name="service_fee" />
-                        <field name="developing_cost" />
                         <field name="royalties" />
+                        <field name="service_fee"  groups="weblot.group_elote_manager"/>
+                        <field name="developing_cost"  groups="weblot.group_elote_manager"/>
                         <field name="carton_quantity" />
                         <field name="carton_weight" />
                         <field name="carton_width" />
@@ -78,13 +78,13 @@
                         <field name="product_tmpl_id" />
                         <field name="default_code" />
                         <field name="isbn" />
-                        <field name="supplier_price" />
+                        <field name="supplier_price" groups="weblot.group_elote_manager"/>
                         <field name="minimum_production" />
                         <field name="min_qty" />
                         <field name="stocking_status" />
                         <field name="royalties" />
-                        <field name="service_fee" />
-                        <field name="developing_cost" />
+                        <field name="service_fee"  groups="weblot.group_elote_manager"/>
+                        <field name="developing_cost"  groups="weblot.group_elote_manager"/>
                         <field name="carton_quantity" />
                         <field name="carton_weight" />
                         <field name="carton_width" />
@@ -107,12 +107,12 @@
                         <field name="product_tmpl_id"/>
                         <field name="default_code" />
                         <field name="isbn" />
-                        <field name="supplier_price" />
+                        <field name="supplier_price" groups="weblot.group_elote_manager"/>
                         <field name="minimum_production" />
                         <field name="min_qty" />
                         <field name="stocking_status" />
-                        <field name="service_fee" />
-                        <field name="developing_cost" />
+                        <field name="service_fee"  groups="weblot.group_elote_manager"/>
+                        <field name="developing_cost"  groups="weblot.group_elote_manager"/>
                         <field name="carton_quantity" />
                         <field name="carton_weight" />
                         <field name="carton_width" />

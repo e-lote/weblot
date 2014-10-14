@@ -17,7 +17,7 @@
 			<field name="carton_quantity" />
 			<field name="carton_volume" />
 			<field name="weight" />
-			<field name="additional_cost" />
+			<field name="additional_cost" group="weblot.group_elote_manager"/>
 		</tree>
             </field>
         </record>
@@ -96,12 +96,15 @@
         	                <field name="carton_quantity" />
         	                <!-- field name="carton_volume" / -->
         	                <!-- field name="porc_teu" / -->
-        	                <field name="additional_cost" />
+        	                <field name="additional_cost" groups="weblot.group_elote_manager"/>
         	                <field name="weight" />
         	                <!-- field name="royalties" />
         	                <field name="developing_cost" / -->
                         </field>
-                        <field name="price_unit" invisible="1" />
+			<field name="price_unit" position="attributes">
+				<attribute name="invisible">1</attribute>
+				<attribute name="groups">weblot.group_elote_manager</attribute>
+			</field>
                         <field name="product_qty" position="attributes">
                                 <attribute name="readonly">1</attribute>
                         </field>
@@ -122,7 +125,7 @@
             <field name="name">purchase.order.cashflow.form.inherit</field>
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
-            <field name="group_ids" eval="[(6,0,[ref('group_elote_user')]),(6,0,[ref('group_elote_manager')])]"/>
+            <field name="group_ids" eval="[(6,0,[ref('weblot.group_elote_user')]),(6,0,[ref('weblot.group_elote_manager')])]"/>
             <field name="arch" type="xml">
                 <data>
                         <field name="date_approve" position="after">
