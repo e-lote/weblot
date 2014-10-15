@@ -1,0 +1,9 @@
+-
+ Crea un purchase order.
+-
+ !record {model: purchase.order, id: po001}:
+    partner_id: pc1
+    order_line:
+      - product_id: p001 
+
+
