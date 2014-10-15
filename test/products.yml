@@ -1,0 +1,26 @@
+-
+  Algunos libros a comprar.
+-
+ !record {model:product.product, id: prod001}:
+    name: Libro ISBN 7898521813161
+    ean13: 7898521813161
+
+-
+-
+ !record {model:product.product, id: prod002}:
+    name: Libro ISBN 7898521813178
+    ean13: 7898521813178
+
+-
+-
+ !record {model:product.product, id: prod003}:
+    name: Libro ISBN 7898521813185
+    ean13: 7898521813185
+
+-
+-
+ !record {model:product.product, id: prod004}:
+    name: Libro ISBN 7898521813192
+    ean13: 7898521813192
+
+
