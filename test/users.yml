@@ -1,0 +1,26 @@
+-
+  Usuarios tipo clientes
+-
+  !record {model: res.user, id: sbuser1}:
+          name: sbuser1
+          login: sbuser1
+          partner_id: sb1
+
+  !record {model: res.user, id: sbuser2}:
+          name: sbuser2
+          login: sbuser2
+          partner_id: sb2
+
+-
+  Usuarios tipo proveedores
+-
+  !record {model: res.user, id: pcuser1}:
+          name: pcuser1
+          login: pcuser1
+          partner_id: pc1
+
+  !record {model: res.user, id: pcuser2}:
+          name: pcuser2
+          login: pcuser2
+          partner_id: pc2
+

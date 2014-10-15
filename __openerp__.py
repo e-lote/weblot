@@ -43,6 +43,8 @@
     'demo_xml': [
     ],
     'test':[
+        'test/partners.yml',
+        'test/users.yml',
     ],
     'installable': True,
 }
