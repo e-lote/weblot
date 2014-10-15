@@ -2,22 +2,26 @@
   Elote Clients.
 -
   !record {model: res.partner, id: sb1}:
-          name: Sociedad Biblica 1
-          customer: true
+    name: Sociedad Biblica 1
+    customer: true
 
+-
+-
   !record {model: res.partner, id: sb2}:
-          name: Sociedad Biblica 2
-          customer: true
+    name: Sociedad Biblica 2
+    customer: true
 
 -
   Elote Providers
 -
   !record {model: res.partner, id: pc1}:
-          name: Production Center 1
-          supplier: true
+    name: Production Center 1
+    supplier: true
 
+-
+-
   !record {model: res.partner, id: pc2}:
-          name: Production Center 2
-          supplier: true
+    name: Production Center 2
+    supplier: true
 
 
