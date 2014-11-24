@@ -234,12 +234,8 @@ class purchase_order_line(osv.osv):
 		partner_id = order.partner_id.id
 		supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,[('name','=',partner_id),\
 					('product_tmpl_id','=',product_tmpl_id)])
-		if supplier_id:
-			supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0]
-			if supplier.carton_quantity > 0:
-				res[line.id] = supplier.carton_volume
-			else:
-				res[line.id] = 0
+		supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0] if supplier_id else False
+		res[line.id] = supplier.carton_volume if supplier and supplier.carton_quantity > 0 else False
 
 	return res
 ###############################################################################################################################
@@ -257,13 +253,9 @@ class purchase_order_line(osv.osv):
 		supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,[('name','=',partner_id),\
 					('product_tmpl_id','=',product_tmpl_id)])
 		# import pdb;pdb.set_trace()
-		if supplier_id:
-			supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0]
-			if supplier.service_fee > 0:
-				res[line.id] = line.product_qty * ( supplier.developing_cost + supplier.royalties + \
-				(supplier.supplier_price * supplier.service_fee/100 ))
-			else:
-				res[line.id] = 0
+		supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0] if supplier_id else False
+		res[line.id] = line.product_qty * ( supplier.developing_cost + supplier.royalties + \
+				(supplier.supplier_price * supplier.service_fee/100 )) if supplier and supplier.service_fee > 0 else False
 	return res
 ###############################################################################################################################
 # 
@@ -275,21 +267,15 @@ class purchase_order_line(osv.osv):
 	for line in self.browse(cr, uid, ids, context=context):
 		product_id = line.product_id.id
 		product_tmpl_id = line.product_id.product_tmpl_id.id
-		#import pdb;pdb.set_trace()
 		order = self.pool.get('purchase.order').browse(cr,uid,line.order_id.id)
                 try:
 		    partner_id = order.partner_id.id
 		    supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,[('name','=',partner_id),\
 		    			('product_tmpl_id','=',product_tmpl_id)])
-		    if supplier_id:
-		    	supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0]
-		    	if supplier.carton_quantity > 0:
-		    		res[line.id] = supplier.carton_quantity
-		    	else:
-		    		res[line.id] = 0
+		    supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0] if supplier_id else False
+		    res[line.id] = supplier.carton_quantity if supplier and supplier.carton_quantity > 0 else False
                 except:
-		    res[line.id] = 0
-		    pass
+		    res[line.id] = False
 	return res
 
 
@@ -306,13 +292,8 @@ class purchase_order_line(osv.osv):
 		partner_id = order.partner_id.id
 		supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,[('name','=',partner_id),\
 					('product_tmpl_id','=',product_tmpl_id)])
-		if supplier_id:
-			supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0]
-			if supplier.carton_quantity > 0:
-				# res[line.id] = math.ceil(line.product_qty / supplier.carton_quantity) * supplier.porc_teu
-				res[line.id] = line.boxes * supplier.carton_volume
-			else:
-				res[line.id] = 0
+		supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0] if supplier_id else False
+		res[line.id] = line.boxes * supplier.carton_volume if supplier and supplier.carton_quantity > 0 else False
 
 	return res
 ###################################################################################################################################
@@ -327,13 +308,8 @@ class purchase_order_line(osv.osv):
 		partner_id = order.partner_id.id
 		supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,[('name','=',partner_id),\
 					('product_tmpl_id','=',product_tmpl_id)])
-		if supplier_id:
-			supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0]
-			if supplier.carton_weight > 0:
-				# res[line.id] = math.ceil(line.product_qty / supplier.carton_quantity) * supplier.porc_teu
-				res[line.id] = line.boxes * supplier.carton_weight
-			else:
-				res[line.id] = 0
+		supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0] if supplier_id else False
+		res[line.id] = line.boxes * supplier.carton_weight if supplier and supplier.carton_weight > 0 else False
 
 	return res
 
@@ -342,8 +318,7 @@ class purchase_order_line(osv.osv):
                 	context = {}
 	        res = {}
         	for line in self.browse(cr, uid, ids, context=context):
-                	if line.order_id.sb_origin:
-        	                res[line.id] = line.order_id.sb_origin.id
+			res[line.id] = line.order_id.sb_origin.id if line.order_id.sb_origin else False
 
 	        return res
 
@@ -352,8 +327,7 @@ class purchase_order_line(osv.osv):
                 	context = {}
 	        res = {}
         	for line in self.browse(cr, uid, ids, context=context):
-                	if line.order_id.partner_id:
-        	                res[line.id] = line.order_id.partner_id.id
+        	        res[line.id] = line.order_id.partner_id.id if line.order_id.partner_id else False
 
 	        return res
 
