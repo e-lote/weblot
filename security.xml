@@ -29,11 +29,19 @@ update res_groups_users_rel set gid=(select id from res_groups where category_id
     </record>
 
     <record id="elote_purchase_order_user" model="ir.rule">
-	    <field name="name">Purchase Order User Rule</field>
+	    <field name="name">Elote Purchase Order User Rule</field>
 	    <field name="model_id" ref="model_purchase_order"/>
 	    <field name="global" eval="False"/>
-	    <field name="groups" eval="[(6,0,[ref('group_elote_user_purchaser')])]"/>
+	    <field name="groups" eval="[(4,ref('group_elote_user_purchaser'))]"/>
 	    <field name="domain_force">[('create_uid','=',user.id)]</field>
+    </record>
+
+    <record id="elote_purchase_order_manager" model="ir.rule">
+	    <field name="name">Elote Purchase Order Manager Rule</field>
+	    <field name="model_id" ref="model_purchase_order"/>
+	    <field name="global" eval="False"/>
+	    <field name="groups" eval="[(4,ref('group_elote_manager_purchaser'))]"/>
+	    <field name="domain_force">[]</field>
     </record>
 
     <!-- PRODUCER -->
@@ -56,13 +64,22 @@ update res_groups_users_rel set gid=(select id from res_groups where category_id
         <field name="implied_ids" eval="[(4, ref('group_elote_user_provider'))]"/>
     </record>
 
-    <record id="elote_purchase_order_manager" model="ir.rule">
-	    <field name="name">Purchase Order Manager Rule</field>
+    <record id="elote_provider_order_user" model="ir.rule">
+	    <field name="name">Elote Provider Order User Rule</field>
 	    <field name="model_id" ref="model_purchase_order"/>
 	    <field name="global" eval="False"/>
-	    <field name="groups" eval="[(4,ref('group_elote_manager_purchaser'))]"/>
+	    <field name="groups" eval="[(4,ref('group_elote_user_provider'))]"/>
+	    <field name="domain_force">[('partner_id','=',user.partner_id.parent_id.id)]</field>
+    </record>
+
+    <record id="elote_provider_order_manager" model="ir.rule">
+	    <field name="name">Elote Provider Order Manager Rule</field>
+	    <field name="model_id" ref="model_purchase_order"/>
+	    <field name="global" eval="False"/>
+	    <field name="groups" eval="[(4,ref('group_elote_manager_provider'))]"/>
 	    <field name="domain_force">[]</field>
     </record>
+
 
     </data>
 </openerp>
