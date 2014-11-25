@@ -117,15 +117,18 @@ class purchase_order(osv.osv):
                     res[obj.id] = total_weight
 
 		return res
+###############################################################################################################################
+	def _fnct_po_is_managed(self, cr, uid, ids, field_name, args, context=None):
+                user_obj = self.pool.get('res.users')
+		if context is None:
+			context = {}
+		res = {}
 
-        #def write(self, cr, uid, ids, vals, context=None):
-	#	if 'delivered' in vals.keys():
-	#		vals['state'] = 'delivered'
-	#	if 'in_transit' in vals.keys():
-	#		vals['state'] = 'in_transit'
-	#	if 'not_valid' in vals.keys():
-	#		vals['state'] = 'not_valid'
-        #	return super(purchase_order, self).write(cr, uid, ids, vals, context=context)
+                for obj in self.browse(cr,uid,ids,context=context):
+                    res[obj.id] = (uid == obj.create_uid.id) or \
+                            (user_obj.has_group(cr, uid, 'weblot.group_elote_manager_purchaser'))
+
+		return res
 
 	_columns = {
 		'sb_origin': fields.related('create_uid','partner_id',type="many2one",relation="res.partner",string="SB Origin",readonly=True),
@@ -134,6 +137,7 @@ class purchase_order(osv.osv):
                 'porc_teu2': fields.function(_fnct_po_porc_teu2,string='Porc faltante 2 TEUs',type='float'),
                 'total_volume': fields.function(_fnct_po_total_volume,string='Volume (m3)',type='float'),
                 'total_weight': fields.function(_fnct_po_total_weight,string='Weight (kg)',type='float'),
+                'is_managed': fields.function(_fnct_po_is_managed,string='Is managed',type='boolean'),
 		'cashflow': fields.binary('Cashflow'),
                 'state': fields.selection(original_purchase_order.STATE_SELECTION, 'Status', readonly=True,
                                           help="The status of the purchase order or the quotation request. "
@@ -199,7 +203,6 @@ class purchase_order_line(osv.osv):
 
 
     def _amount_line(self, cr, uid, ids, prop, arg, context=None):
-	# import pdb;pdb.set_trace()
         res = {}
         cur_obj=self.pool.get('res.currency')
         tax_obj = self.pool.get('account.tax')
@@ -209,7 +212,15 @@ class purchase_order_line(osv.osv):
             res[line.id] = cur_obj.round(cr, uid, cur, taxes['total'])+line.additional_cost
         return res
 
-
+    def _amount_unit_line(self, cr, uid, ids, prop, arg, context=None):
+        res = {}
+        cur_obj=self.pool.get('res.currency')
+        tax_obj = self.pool.get('account.tax')
+        for line in self.browse(cr, uid, ids, context=context):
+            taxes = tax_obj.compute_all(cr, uid, line.taxes_id, line.price_unit, 1, line.product_id, line.order_id.partner_id)
+            cur = line.order_id.pricelist_id.currency_id
+            res[line.id] = cur_obj.round(cr, uid, cur, taxes['total'])+line.unit_additional_cost
+        return res
 
     def _fnct_line_product_state(self, cr, uid, ids, field_name, args, context=None):
 
@@ -241,6 +252,22 @@ class purchase_order_line(osv.osv):
 ###############################################################################################################################
 # ADDITIONAL COSTS
 ###############################################################################################################################
+    def _fnct_po_unit_additional_cost(self, cr, uid, ids, field_name, args, context=None):
+	if context is None:
+		context = {}
+	res = {}
+	for line in self.browse(cr, uid, ids, context=context):
+		product_id = line.product_id.id
+		product_tmpl_id = line.product_id.product_tmpl_id.id
+		order = self.pool.get('purchase.order').browse(cr,uid,line.order_id.id)
+		partner_id = order.partner_id.id
+		supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,[('name','=',partner_id),\
+					('product_tmpl_id','=',product_tmpl_id)])
+		supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0] if supplier_id else False
+		res[line.id] = ( supplier.developing_cost + supplier.royalties + \
+				(supplier.supplier_price * supplier.service_fee/100 )) if supplier and supplier.service_fee > 0 else False
+	return res
+
     def _fnct_po_additional_cost(self, cr, uid, ids, field_name, args, context=None):
 	if context is None:
 		context = {}
@@ -252,7 +279,6 @@ class purchase_order_line(osv.osv):
 		partner_id = order.partner_id.id
 		supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,[('name','=',partner_id),\
 					('product_tmpl_id','=',product_tmpl_id)])
-		# import pdb;pdb.set_trace()
 		supplier = self.pool.get('product.supplierinfo').browse(cr,uid,supplier_id)[0] if supplier_id else False
 		res[line.id] = line.product_qty * ( supplier.developing_cost + supplier.royalties + \
 				(supplier.supplier_price * supplier.service_fee/100 )) if supplier and supplier.service_fee > 0 else False
@@ -348,6 +374,7 @@ class purchase_order_line(osv.osv):
                 # 'royalties': fields.function(_fnct_po_service_fee,string='Royalties',type='float'),
                 # 'developing_cost': fields.function(_fnct_po_developing_cost,string='Developing Cost',type='float'),
                 'additional_cost': fields.function(_fnct_po_additional_cost,string='Additional Cost',type='float'),
+                'unit_additional_cost': fields.function(_fnct_po_unit_additional_cost,string='Unit Additional Cost',type='float'),
 	        # 'price_unit': fields.float('Unit Price', required=True, readonly=True, digits_compute= dp.get_precision('Product Price')),
 	}
 

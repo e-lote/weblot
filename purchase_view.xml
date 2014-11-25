@@ -17,7 +17,7 @@
 			<field name="carton_quantity" />
 			<field name="carton_volume" />
 			<field name="weight" />
-			<field name="additional_cost" group="weblot.group_elote_manager"/>
+			<field name="additional_cost" groups="weblot.group_elote_user_purchaser"/>
 		</tree>
             </field>
         </record>
@@ -44,13 +44,13 @@
                 <data>
 			<button name="view_invoice" position="before" >
 				<button name="purchase_in_process" states="consolidated" string="Process"
-					groups="weblot.group_elote_production,weblot.group_elote_manager"/>
+					groups="weblot.group_elote_user_provider,weblot.group_elote_manager_provider"/>
 				<button name="purchase_dispatch"   states="in_process"   string="Dispatch"
-					groups="weblot.group_elote_production,weblot.group_elote_manager"/>
+					groups="weblot.group_elote_user_provider,weblot.group_elote_manager_provider"/>
 				<button name="purchase_receive"    states="dispatched"   string="Receive"
-					groups="weblot.group_elote_user,weblot.group_elote_manager"/>
+					groups="weblot.group_elote_user_provider,weblot.group_elote_manager_provider"/>
 				<button name="purchase_not_valid"  states="consolidated,in_process" string="Invalidate"
-					groups="weblot.group_elote_production,weblot.group_elote_manager"/>
+					groups="weblot.group_elote_user_provider,weblot.group_elote_manager_provider"/>
 			</button>
 
 			<notebook>	
@@ -72,20 +72,16 @@
 			</field>
 
                         <field name="partner_ref" position="after">
-				<group>
 				<field name="create_uid" />
-				</group>
-				<br />
-				    <h3>
-					<group cols="4">
-						<field name="total_volume" />
-						<field name="total_weight" />	
-					</group>
-					<group cols="4">
-						<field name="porc_teu1" />	
-						<field name="porc_teu2" />	
-					</group>
-				    </h3>
+			</field>
+
+                        <field name="date_order" position="after">
+				<separator string="Geometry" colspan="2"/>
+				<field name="total_volume" />
+				<field name="total_weight" />	
+				<separator string="Storage" colspan="2"/>
+				<field name="porc_teu1" />	
+				<field name="porc_teu2" />	
 			</field>
                         <field name="product_qty" position="before">
 				<field name="isbn" position="attributes">
@@ -124,12 +120,14 @@
         <record model="ir.ui.view" id="view_purchase_order_weblot_cashflow_form">
             <field name="name">purchase.order.cashflow.form.inherit</field>
             <field name="model">purchase.order</field>
-            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="inherit_id" ref="view_purchase_order_weblot_form"/>
             <field name="group_ids" eval="[(4,ref('weblot.group_elote_user_purchaser'))]"/>
             <field name="arch" type="xml">
                 <data>
-                        <field name="date_approve" position="after">
-					<field name="cashflow"/>
+                        <field name="create_uid" position="after">
+				<field name="is_managed" invisible="1"/>
+				<separator string="Cashflow" colspan="4" attrs="{'invisible':[('is_managed','=',False)]}"/>
+				<field name="cashflow" nolabel="1" colspan="2" attrs="{'invisible':[('is_managed','=',False)]}"/>
 			</field>
                 </data>
             </field>
