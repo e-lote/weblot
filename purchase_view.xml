@@ -125,7 +125,7 @@
             <field name="name">purchase.order.cashflow.form.inherit</field>
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
-            <field name="group_ids" eval="[(6,0,[ref('weblot.group_elote_user')]),(6,0,[ref('weblot.group_elote_manager')])]"/>
+            <field name="group_ids" eval="[(4,ref('weblot.group_elote_user_purchaser'))]"/>
             <field name="arch" type="xml">
                 <data>
                         <field name="date_approve" position="after">
@@ -140,13 +140,33 @@
             <field name="res_model">purchase.order.line</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <!-- field name="search_view_id" ref="view_report_purchase_order_weblot_filter"/ -->
             <field name="view_id" ref="view_purchase_order_line_tree_view"/>
         </record>
 
         <menuitem name="Items"
             action="action_report_purchase_order_lines"
             id="menu_po_line_tree" parent="purchase.menu_procurement_management" sequence="55"/>
-      
+
+    <!-- search view -->
+
+        <record model="ir.ui.view" id="view_request_for_quotation_filter">
+            <field name="name">PO View</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="create_uid" position="after">
+                        <field name="lote_id" />
+			<filter name="with_cashflow" string="With Cashflow" domain="[('cashflow','!=',False)]"/>
+			<filter name="without_cashflow" string="Without Cashflow" domain="[('cashflow','=',False)]"/>
+		    </field>
+		    <group position="inside">
+			<filter string="Lote" domain="[]" context="{'group_by':'lote_id'}"/>
+		    </group>
+                </data>
+            </field>
+        </record>
+
+
     </data>
 </openerp>

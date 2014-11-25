@@ -1,24 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+	    <!-- update 
 
-    <record id="group_elote_user" model="res.groups">
-        <field name="name">Elote User</field>
-        <field name="category_id" ref="base.module_category_purchase_management"/>
+update res_groups_users_rel set gid=(select id from res_groups where category_id=(select id from ir_module_category where name='Elote Purchaser') and name='User' limit 1) where gid=(select id from res_groups where name='e-Lote User' limit 1);
+
+update res_groups_users_rel set gid=(select id from res_groups where category_id=(select id from ir_module_category where name='Elote Purchaser') and name='Manager' limit 1) where gid=(select id from res_groups where name='e-Lote Manager' limit 1) and not uid = 1;
+
+		 -->
+    <!-- PURCHASER -->
+    <record model="ir.module.category" id="module_category_elote_purchaser_management">
+        <field name="name">Elote Purchaser</field>
+        <field name="description">Helps you manage your purchase activities in the Elote site.</field>
+        <field name="sequence">-1</field>
+    </record>
+
+    <record id="group_elote_user_purchaser" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_elote_purchaser_management"/>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
     </record>
 
-    <record id="group_elote_production" model="res.groups">
-        <field name="name">Elote Production</field>
-        <field name="category_id" ref="base.module_category_purchase_management"/>
-        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-    </record>
-
-    <record id="group_elote_manager" model="res.groups">
-        <field name="name">Elote Manager</field>
-        <field name="category_id" ref="base.module_category_purchase_management"/>
+    <record id="group_elote_manager_purchaser" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_elote_purchaser_management"/>
         <field name="users" eval="[(4, ref('base.user_root'))]"/>
-        <field name="implied_ids" eval="[(6, 0, [ref('group_elote_user'), ref('group_elote_production')])]"/>
+        <field name="implied_ids" eval="[(4, ref('group_elote_user_purchaser'))]"/>
+    </record>
+
+    <record id="elote_purchase_order_user" model="ir.rule">
+	    <field name="name">Purchase Order User Rule</field>
+	    <field name="model_id" ref="model_purchase_order"/>
+	    <field name="global" eval="False"/>
+	    <field name="groups" eval="[(6,0,[ref('group_elote_user_purchaser')])]"/>
+	    <field name="domain_force">[('create_uid','=',user.id)]</field>
+    </record>
+
+    <!-- PRODUCER -->
+    <record model="ir.module.category" id="module_category_elote_producer_management">
+        <field name="name">Elote Producer</field>
+        <field name="description">Helps you manage your productor activities in the Elote site.</field>
+        <field name="sequence">-1</field>
+    </record>
+
+    <record id="group_elote_user_provider" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_elote_producer_management"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_elote_manager_provider" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_elote_producer_management"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="implied_ids" eval="[(4, ref('group_elote_user_provider'))]"/>
+    </record>
+
+    <record id="elote_purchase_order_manager" model="ir.rule">
+	    <field name="name">Purchase Order Manager Rule</field>
+	    <field name="model_id" ref="model_purchase_order"/>
+	    <field name="global" eval="False"/>
+	    <field name="groups" eval="[(4,ref('group_elote_manager_purchaser'))]"/>
+	    <field name="domain_force">[]</field>
     </record>
 
     </data>
