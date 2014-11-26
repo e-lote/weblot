@@ -125,20 +125,21 @@ class purchase_order(osv.osv):
 		res = {}
 
                 for obj in self.browse(cr,uid,ids,context=context):
-                    res[obj.id] = (uid == obj.create_uid.id) or \
+                    res[obj.id] = (uid == obj.responsible_id.id) or \
                             (user_obj.has_group(cr, uid, 'weblot.group_elote_manager_purchaser'))
 
 		return res
 
 	_columns = {
-		'sb_origin': fields.related('create_uid','partner_id',type="many2one",relation="res.partner",string="SB Origin",readonly=True),
+                'sb_origin': fields.many2one('res.partner', string="SB Origin", states={'confirmed': [('readonly', True)], 'approved': [('readonly', True)], 'consolidated': [('readonly', True)], 'not_valid': [('readonly', True)], 'in_process': [('readonly', True)], 'dispatched': [('readonly', True)], 'received': [('readonly', True)]}),
+                'responsible_id': fields.many2one('res.users', string="Responsible", states={'confirmed': [('readonly', True)], 'approved': [('readonly', True)], 'consolidated': [('readonly', True)], 'not_valid': [('readonly', True)], 'in_process': [('readonly', True)], 'dispatched': [('readonly', True)], 'received': [('readonly', True)]}),
                 'total_volume': fields.function(_fnct_po_total_volume,string='Volume (m3)',type='float'),
                 'porc_teu1': fields.function(_fnct_po_porc_teu1,string='Porc faltante 1 TEU',type='float'),
                 'porc_teu2': fields.function(_fnct_po_porc_teu2,string='Porc faltante 2 TEUs',type='float'),
                 'total_volume': fields.function(_fnct_po_total_volume,string='Volume (m3)',type='float'),
                 'total_weight': fields.function(_fnct_po_total_weight,string='Weight (kg)',type='float'),
                 'is_managed': fields.function(_fnct_po_is_managed,string='Is managed',type='boolean'),
-		'cashflow': fields.binary('Cashflow'),
+		'cashflow': fields.binary('Cashflow', states={'confirmed': [('readonly', True)], 'approved': [('readonly', True)], 'consolidated': [('readonly', True)], 'not_valid': [('readonly', True)], 'in_process': [('readonly', True)], 'dispatched': [('readonly', True)], 'received': [('readonly', True)]}),
                 'state': fields.selection(original_purchase_order.STATE_SELECTION, 'Status', readonly=True,
                                           help="The status of the purchase order or the quotation request. "
                                                "A request for quotation is a purchase order in a 'Draft' status. "
@@ -150,6 +151,10 @@ class purchase_order(osv.osv):
                                                "in exception.",
                                           select=True, copy=False),
 		}
+        _defaults={
+            'responsible_id': lambda self, cr, uid, *args: uid,
+            'sb_origin': lambda self, cr, uid, *args: self.pool.get('res.users').browse(cr, uid, uid).partner_id.parent_id.id
+        }
 
 purchase_order()
 
@@ -444,14 +449,13 @@ class purchase_order_line(osv.osv):
 
         supplierinfo = False
         supplier_price = 0
-	if not product.seller_ids or \
+	if not product.seller_ids and \
 		not product_supplierinfo.search(cr,uid,[('name','=',partner_id),('product_tmpl_id','=',product.product_tmpl_id.id)]):
-        	raise osv.except_osv(_('No Supplier  Info !'), _('Product has no supplier information.'))
+            raise osv.except_osv(_('No Supplier  Info !'), _('Product has no supplier information.'))
 	
 
         supplierinfo = False
         for supplier in product.seller_ids:
-	    # import pdb;pdb.set_trace()
   	    supplier_price = supplier.supplier_price
             if partner_id and (supplier.name.id == partner_id):
                 supplierinfo = supplier

@@ -33,7 +33,7 @@ update res_groups_users_rel set gid=(select id from res_groups where category_id
 	    <field name="model_id" ref="model_purchase_order"/>
 	    <field name="global" eval="False"/>
 	    <field name="groups" eval="[(4,ref('group_elote_user_purchaser'))]"/>
-	    <field name="domain_force">[('create_uid','=',user.id)]</field>
+	    <field name="domain_force">[('responsible_id','=',user.id)]</field>
     </record>
 
     <record id="elote_purchase_order_manager" model="ir.rule">

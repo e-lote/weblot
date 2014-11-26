@@ -58,6 +58,9 @@
                                 	<attribute name="invisible">1</attribute>
 				</page>
 			</notebook>	
+			<field name="partner_id" position="attributes" >
+				<attribute name="attrs">{'readonly': [('order_line','!=',[])]}</attribute>
+			</field>
 			<field name="incoterm_id" position="attributes" >
                                 	<attribute name="invisible">1</attribute>
 			</field>
@@ -72,7 +75,7 @@
 			</field>
 
                         <field name="partner_ref" position="after">
-				<field name="create_uid" />
+				<field name="responsible_id" />
 			</field>
 
                         <field name="date_order" position="after">
@@ -124,11 +127,13 @@
             <field name="group_ids" eval="[(4,ref('weblot.group_elote_user_purchaser'))]"/>
             <field name="arch" type="xml">
                 <data>
-                        <field name="create_uid" position="after">
-				<field name="is_managed" invisible="1"/>
-				<separator string="Cashflow" colspan="4" attrs="{'invisible':[('is_managed','=',False)]}"/>
-				<field name="cashflow" nolabel="1" colspan="2" attrs="{'invisible':[('is_managed','=',False)]}"/>
-			</field>
+                    <field name="responsible_id" position="after">
+			<group cols="4" colspan="4">
+		    	   <field name="is_managed" invisible="1"/>
+		    	   <separator string="Cashflow" colspan="2" attrs="{'invisible':[('is_managed','=',False)]}"/>
+		    	   <field name="cashflow" nolabel="1" colspan="2" attrs="{'invisible':[('is_managed','=',False)]}"/>
+		        </group>
+		    </field>
                 </data>
             </field>
         </record>
@@ -154,6 +159,7 @@
             <field name="arch" type="xml">
                 <data>
                     <field name="create_uid" position="after">
+                        <field name="responsible_id" />
                         <field name="lote_id" />
 			<filter name="with_cashflow" string="With Cashflow" domain="[('cashflow','!=',False)]"/>
 			<filter name="without_cashflow" string="Without Cashflow" domain="[('cashflow','=',False)]"/>
