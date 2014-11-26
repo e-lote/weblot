@@ -1,0 +1,5 @@
+#
+# update purchase_order set responsible_id = create_uid;
+# update purchase_order set sb_origin = P.parent_id from res_partner as P left join res_users U on (U.partner_id=P.id) where responsible_id=U.id;
+#
+
