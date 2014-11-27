@@ -86,35 +86,28 @@
 				<field name="porc_teu1" />	
 				<field name="porc_teu2" />	
 			</field>
-                        <field name="product_qty" position="before">
-				<field name="isbn" position="attributes">
-                                	<attribute name="readonly">1</attribute>
+			<field name="order_line" position="replace">
+				<field name="order_line">
+					<tree string="Purchase Order Lines" editable="bottom">
+					    <field name="product_id" on_change="onchange_product_id(parent.pricelist_id,product_id,0,False,parent.partner_id, parent.date_order,parent.fiscal_position,date_planned,name,False,parent.state,context)"/>
+					    <field name="name"/>
+                                            <field name="isbn" readonly="1" />
+					    <field name="boxes" />
+					    <field name="carton_quantity" readonly="1"/>
+        	                	    <field name="weight" readonly="1"/>
+
+					    <field name="date_planned" invisible="1"/>
+					    <field name="company_id" groups="base.group_multi_company" widget="selection" invisible="1"/>
+					    <field name="account_analytic_id" groups="purchase.group_analytic_accounting" domain="[('type','not in',('view','template'))]" invisible="1"/>
+					    <field name="product_uom" groups="product.group_uom" on_change="onchange_product_uom(parent.pricelist_id,product_id,product_qty,product_uom,parent.partner_id, parent.date_order,parent.fiscal_position,date_planned,name,price_unit,parent.state,context)" invisible="1"/>
+					    <field name="price_unit" invisible="1"/>
+					    <field name="product_qty" on_change="onchange_product_id(parent.pricelist_id,product_id,product_qty,product_uom,parent.partner_id,parent.date_order,parent.fiscal_position,date_planned,name,price_unit,parent.state,context)" readonly="1"/>
+					    <field name="price_subtotal" readonly="1"/>
+					    <field name="taxes_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','!=','sale')]" invisible="1"/>
+					    <field name="state" invisible="1"/>
+					    <!--field name="picking_type_id" invisible="1"/-->
+					</tree>
 				</field>
-				<field name="boxes" />
-                                <!-- field name="product_state" / -->
-        	                <field name="carton_quantity" />
-        	                <!-- field name="carton_volume" / -->
-        	                <!-- field name="porc_teu" / -->
-        	                <field name="additional_cost" groups="weblot.group_elote_manager"/>
-        	                <field name="weight" />
-        	                <!-- field name="royalties" />
-        	                <field name="developing_cost" / -->
-                        </field>
-			<field name="price_unit" position="attributes">
-				<attribute name="invisible">1</attribute>
-				<attribute name="groups">weblot.group_elote_manager</attribute>
-			</field>
-                        <field name="product_qty" position="attributes">
-                                <attribute name="readonly">1</attribute>
-                        </field>
-			<field name="taxes_id" position="attributes">
-                                <attribute name="invisible">1</attribute>
-			</field>
-			<field name="picking_type_id" position="attributes">
-                                <attribute name="invisible">1</attribute>
-			</field>
-			<field name="date_planned" position="attributes">
-                                <attribute name="invisible">1</attribute>
 			</field>
                 </data>
             </field>

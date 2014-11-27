@@ -18,51 +18,18 @@
             </field>
         </record>
 
-
-        <record id="productsupplier_tree_view" model="ir.ui.view">
-            <field name="name">product.supplierinfo.treeview</field>
-            <field name="model">product.supplierinfo</field>
-            <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <tree string="Product Supplier Info" editable="bottom">
-                        <field name="name" />
-                        <field name="product_tmpl_id" />
-                        <field name="default_code" />
-                        <field name="isbn" />
-                        <field name="minimum_production" />
-                        <field name="min_qty" />
-                        <field name="supplier_price" groups="weblot.group_elote_manager"/>
-                        <field name="stocking_status" />
-                        <field name="royalties" />
-                        <field name="service_fee"  groups="weblot.group_elote_manager"/>
-                        <field name="developing_cost"  groups="weblot.group_elote_manager"/>
-                        <field name="carton_quantity" />
-                        <field name="carton_weight" />
-                        <field name="carton_width" />
-                        <field name="carton_length" />
-                        <field name="carton_heigth" />
-                        <field name="carton_volume" />
-                        <field name="porc_teu" />
-                </tree>
-            </field>
-        </record>
-
     <record id="productsupplier_search_view" model="ir.ui.view">
         <field name="name">Product Supplier - Search</field>
         <field name="model">product.supplierinfo</field>
         <field name="arch" type="xml">
 	    <search string="Search Product/Supplier Information">
+		<field name="product_tmpl_id"/>
+		<field name="name"/>
+		<field name="lote_id"/>
+		<field name="isbn"/>
                 <filter string='Product' icon="terp-mrp" domain="[]" context="{'group_by' : 'product_tmpl_id'}"/>
 		<filter string='Supplier' icon="terp-mrp" domain="[]" context="{'group_by' : 'name'}"/>
-                <!-- xpath expr="//filter[@string='Country']" position="after">
-			<separator />
-                        <filter string='Region' icon="terp-mrp" domain="[]" context="{'group_by' : 'region'}"/>
-                        <filter string='Ciudad' icon="terp-mrp" domain="[]" context="{'group_by' : 'city'}"/>
-                </xpath>
-                <xpath expr="//filter[@string='Suppliers']" position="after">
-        	        <filter string="Saldo Pendiente" icon="terp-camera_test"  domain="[('credit','>',0)]"
-				 help = "Clientes con saldo deudor" />
-                </xpath -->
+		<filter string='Lote' icon="terp-mrp" domain="[]" context="{'group_by' : 'lote_id'}"/>
 	    </search>
         </field>
     </record>
@@ -75,23 +42,24 @@
             <field name="arch" type="xml">
                 <tree string="Product Supplier Info" editable="bottom">
                         <field name="name" />
+                        <field name="lote_id"/>
                         <field name="product_tmpl_id" />
                         <field name="default_code" />
                         <field name="isbn" />
-                        <field name="supplier_price" groups="weblot.group_elote_manager"/>
                         <field name="minimum_production" />
                         <field name="min_qty" />
                         <field name="stocking_status" />
-                        <field name="royalties" />
-                        <field name="service_fee"  groups="weblot.group_elote_manager"/>
-                        <field name="developing_cost"  groups="weblot.group_elote_manager"/>
+                        <field name="supplier_price" groups="weblot.group_elote_manager_purchaser"/>
+                        <field name="service_fee" groups="weblot.group_elote_manager_purchaser"/>
+                        <field name="royalties" groups="weblot.group_elote_manager_purchaser"/>
+                        <field name="developing_cost" groups="weblot.group_elote_manager_purchaser"/>
+			<field name="total_unit_price" />
                         <field name="carton_quantity" />
                         <field name="carton_weight" />
                         <field name="carton_width" />
                         <field name="carton_length" />
                         <field name="carton_heigth" />
                         <field name="carton_volume" />
-                        <field name="porc_teu" />
                 </tree>
             </field>
         </record>
@@ -104,15 +72,18 @@
                 <form string="Product Supplier Info">
                     <group col="6" colspan="4">
                         <field name="name"/>
+                        <field name="lote_id" groups="weblot.group_elote_manager_purchaser"/>
                         <field name="product_tmpl_id"/>
-                        <field name="default_code" />
+                        <field name="default_code" groups="weblot.group_elote_manager_purchaser" />
                         <field name="isbn" />
-                        <field name="supplier_price" groups="weblot.group_elote_manager"/>
                         <field name="minimum_production" />
                         <field name="min_qty" />
                         <field name="stocking_status" />
-                        <field name="service_fee"  groups="weblot.group_elote_manager"/>
-                        <field name="developing_cost"  groups="weblot.group_elote_manager"/>
+                        <field name="supplier_price" groups="weblot.group_elote_manager_purchaser"/>
+                        <field name="service_fee" groups="weblot.group_elote_manager_purchaser"/>
+                        <field name="royalties" groups="weblot.group_elote_manager_purchaser"/>
+                        <field name="developing_cost" groups="weblot.group_elote_manager_purchaser"/>
+			<field name="total_unit_price" />
                         <field name="carton_quantity" />
                         <field name="carton_weight" />
                         <field name="carton_width" />

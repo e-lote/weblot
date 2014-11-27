@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-	    <!-- update 
-
-update res_groups_users_rel set gid=(select id from res_groups where category_id=(select id from ir_module_category where name='Elote Purchaser') and name='User' limit 1) where gid=(select id from res_groups where name='e-Lote User' limit 1);
-
-update res_groups_users_rel set gid=(select id from res_groups where category_id=(select id from ir_module_category where name='Elote Purchaser') and name='Manager' limit 1) where gid=(select id from res_groups where name='e-Lote Manager' limit 1) and not uid = 1;
-
-		 -->
     <!-- PURCHASER -->
     <record model="ir.module.category" id="module_category_elote_purchaser_management">
         <field name="name">Elote Purchaser</field>

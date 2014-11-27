@@ -380,6 +380,7 @@ class purchase_order_line(osv.osv):
                 # 'developing_cost': fields.function(_fnct_po_developing_cost,string='Developing Cost',type='float'),
                 'additional_cost': fields.function(_fnct_po_additional_cost,string='Additional Cost',type='float'),
                 'unit_additional_cost': fields.function(_fnct_po_unit_additional_cost,string='Unit Additional Cost',type='float'),
+                'unit_cost': fields.function(_amount_unit_line,string='Unit Additional Cost',type='float'),
 	        # 'price_unit': fields.float('Unit Price', required=True, readonly=True, digits_compute= dp.get_precision('Product Price')),
 	}
 

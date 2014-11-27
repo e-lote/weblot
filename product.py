@@ -68,6 +68,16 @@ class product_supplierinfo(osv.osv):
         	    return [('id', '=', 0)]
 	        return [('id', 'in', [x[0] for x in res])]
 
+	def _fnct_total_unit_price(self, cr, uid, ids, field_name, args, context=None):
+                context = context or {}
+	        res = {}
+
+        	for line in self.browse(cr, uid, ids, context=context):
+                        res[line.id] = line.developing_cost + line.royalties + (line.supplier_price * line.service_fee/100)
+
+	        return res
+
+
 	_columns = {
 		'supplier_price': fields.float('Supplier Price'),
 		'minimum_production': fields.float('Minimum Production'),
@@ -84,6 +94,7 @@ class product_supplierinfo(osv.osv):
 		'porc_teu': fields.float('% TEU'),
 		'isbn': fields.function(_fnct_isbn,string='ISBN',type='char',fnct_search=_fnct_search_isbn),
 		'default_code': fields.function(_fnct_default_code,string='Default Code',type='char',fnct_search=_fnct_search_default_code),
+                'total_unit_price': fields.function(_fnct_total_unit_price,string='',type='float'),
 		}
        
 product_supplierinfo()
