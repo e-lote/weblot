@@ -125,14 +125,15 @@ class purchase_order(osv.osv):
 		res = {}
 
                 for obj in self.browse(cr,uid,ids,context=context):
-                    res[obj.id] = (uid == obj.responsible_id.id) or \
+                    res[obj.id] = (not obj.responsible_id) or \
+                            (obj.responsible_id and uid == obj.responsible_id.id) or \
                             (user_obj.has_group(cr, uid, 'weblot.group_elote_manager_purchaser'))
 
 		return res
 
 	_columns = {
-                'sb_origin': fields.many2one('res.partner', string="SB Origin", states={'confirmed': [('readonly', True)], 'approved': [('readonly', True)], 'consolidated': [('readonly', True)], 'not_valid': [('readonly', True)], 'in_process': [('readonly', True)], 'dispatched': [('readonly', True)], 'received': [('readonly', True)]}),
-                'responsible_id': fields.many2one('res.users', string="Responsible", states={'confirmed': [('readonly', True)], 'approved': [('readonly', True)], 'consolidated': [('readonly', True)], 'not_valid': [('readonly', True)], 'in_process': [('readonly', True)], 'dispatched': [('readonly', True)], 'received': [('readonly', True)]}),
+                'sb_origin': fields.many2one('res.partner', string="SB Origin", required=True, states={'confirmed': [('readonly', True)], 'approved': [('readonly', True)], 'consolidated': [('readonly', True)], 'not_valid': [('readonly', True)], 'in_process': [('readonly', True)], 'dispatched': [('readonly', True)], 'received': [('readonly', True)]}),
+                'responsible_id': fields.many2one('res.users', string="Responsible", required=True, states={'confirmed': [('readonly', True)], 'approved': [('readonly', True)], 'consolidated': [('readonly', True)], 'not_valid': [('readonly', True)], 'in_process': [('readonly', True)], 'dispatched': [('readonly', True)], 'received': [('readonly', True)]}),
                 'total_volume': fields.function(_fnct_po_total_volume,string='Volume (m3)',type='float'),
                 'porc_teu1': fields.function(_fnct_po_porc_teu1,string='Porc faltante 1 TEU',type='float'),
                 'porc_teu2': fields.function(_fnct_po_porc_teu2,string='Porc faltante 2 TEUs',type='float'),
