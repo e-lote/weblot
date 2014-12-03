@@ -94,7 +94,7 @@ class product_supplierinfo(osv.osv):
 		'porc_teu': fields.float('% TEU'),
 		'isbn': fields.function(_fnct_isbn,string='ISBN',type='char',fnct_search=_fnct_search_isbn),
 		'default_code': fields.function(_fnct_default_code,string='Default Code',type='char',fnct_search=_fnct_search_default_code),
-                'total_unit_price': fields.function(_fnct_total_unit_price,string='',type='float'),
+                'total_unit_price': fields.function(_fnct_total_unit_price,type='float', string="Total unit price"),
 		}
        
 product_supplierinfo()
