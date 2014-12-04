@@ -193,20 +193,18 @@ class purchase_order_line(osv.osv):
     	return super(purchase_order_line, self).write(cr, uid, ids, vals, context=context)
 
     def create(self, cr, uid, vals, context=None):
-	# obj = self.browse(cr,uid,vals['order_id'])
-	if vals['order_id']:
-		order = self.pool.get('purchase.order').browse(cr,uid,vals['order_id'])
-		partner_id = order.partner_id.id
-		product_obj = self.pool.get('product.product').browse(cr,uid,vals['product_id'])
+        if vals['order_id']:
+        	order = self.pool.get('purchase.order').browse(cr,uid,vals['order_id'])
+                partner_id = order.partner_id.id
+        	product_obj = self.pool.get('product.product').browse(cr,uid,vals['product_id'])
 
-		product_supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,\
-			[('product_tmpl_id','=',product_obj.product_tmpl_id.id),('name','=',partner_id)])
-		if product_supplier_id:
-			product_supplier = self.pool.get('product.supplierinfo').browse(cr,uid,product_supplier_id)
-			vals['price_unit'] = product_supplier[0].supplier_price
-			vals['product_qty'] = product_supplier[0].carton_quantity * vals['boxes']
+        	product_supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,\
+        		[('product_tmpl_id','=',product_obj.product_tmpl_id.id),('name','=',partner_id)])
+        	if product_supplier_id:
+        		product_supplier = self.pool.get('product.supplierinfo').browse(cr,uid,product_supplier_id)
+        		vals['price_unit'] = product_supplier[0].supplier_price
+        		vals['product_qty'] = product_supplier[0].carton_quantity * vals['boxes']
     	return super(purchase_order_line, self).create(cr, uid, vals, context=context)
-
 
     def _amount_line(self, cr, uid, ids, prop, arg, context=None):
         res = {}
