@@ -164,32 +164,36 @@ class purchase_order_line(osv.osv):
     _inherit = 'purchase.order.line'
 
     def write(self, cr, uid, ids, vals, context=None):
-	if 'boxes' in vals:
-		obj = self.browse(cr,uid,ids)
-		order_id = obj[0].order_id.id
-		if order_id:
-			order = self.pool.get('purchase.order').browse(cr,uid,order_id)
-			partner_id = order.partner_id.id
+        if 'boxes' in vals:
+        	obj = self.browse(cr,uid,ids)
+        	order_id = obj[0].order_id.id
+        	if order_id:
+        		order = self.pool.get('purchase.order').browse(cr,uid,order_id)
+        		partner_id = order.partner_id.id
 
-			product_supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,\
-				[('product_tmpl_id','=',obj[0].product_id.product_tmpl_id.id),('name','=',partner_id)])
-			if product_supplier_id:
-				product_supplier = self.pool.get('product.supplierinfo').browse(cr,uid,product_supplier_id)[0]			
-				vals['price_unit'] = product_supplier.supplier_price
-				vals['product_qty'] = product_supplier.carton_quantity * vals['boxes']
+        		product_supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,\
+        			[('product_tmpl_id','=',obj[0].product_id.product_tmpl_id.id),
+                                 ('lote_id','=',obj[0].lote_id.id),
+                                 ('name','=',partner_id)])
+        		if product_supplier_id:
+        			product_supplier = self.pool.get('product.supplierinfo').browse(cr,uid,product_supplier_id)[0]			
+        			vals['price_unit'] = product_supplier.supplier_price
+        			vals['product_qty'] = product_supplier.carton_quantity * vals['boxes']
         if 'price_unit' in vals:
-		obj = self.browse(cr,uid,ids)
-		order_id = obj[0].order_id.id
-		if order_id:
-			order = self.pool.get('purchase.order').browse(cr,uid,order_id)
-			partner_id = order.partner_id.id
+        	obj = self.browse(cr,uid,ids)
+        	order_id = obj[0].order_id.id
+        	if order_id:
+        		order = self.pool.get('purchase.order').browse(cr,uid,order_id)
+        		partner_id = order.partner_id.id
 
-			product_supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,\
-				[('product_tmpl_id','=',obj[0].product_id.product_tmpl_id.id),('name','=',partner_id)])
-			if product_supplier_id:
-				product_supplier = self.pool.get('product.supplierinfo').browse(cr,uid,product_supplier_id)[0]			
-				vals['price_unit'] = product_supplier.supplier_price
-				vals['product_qty'] = product_supplier.carton_quantity * vals['boxes']
+        		product_supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,\
+        			[('product_tmpl_id','=',obj[0].product_id.product_tmpl_id.id),
+                                 ('lote_id','=',obj[0].lote_id.id),
+                                 ('name','=',partner_id)])
+        		if product_supplier_id:
+        			product_supplier = self.pool.get('product.supplierinfo').browse(cr,uid,product_supplier_id)[0]			
+        			vals['price_unit'] = product_supplier.supplier_price
+        			vals['product_qty'] = product_supplier.carton_quantity * vals['boxes']
     	return super(purchase_order_line, self).write(cr, uid, ids, vals, context=context)
 
     def create(self, cr, uid, vals, context=None):
@@ -199,7 +203,9 @@ class purchase_order_line(osv.osv):
         	product_obj = self.pool.get('product.product').browse(cr,uid,vals['product_id'])
 
         	product_supplier_id = self.pool.get('product.supplierinfo').search(cr,uid,\
-        		[('product_tmpl_id','=',product_obj.product_tmpl_id.id),('name','=',partner_id)])
+        		[('product_tmpl_id','=',product_obj.product_tmpl_id.id),
+                         ('lote_id','=',order.lote_id.id),
+                         ('name','=',partner_id)])
         	if product_supplier_id:
         		product_supplier = self.pool.get('product.supplierinfo').browse(cr,uid,product_supplier_id)
         		vals['price_unit'] = product_supplier[0].supplier_price
@@ -473,8 +479,6 @@ class purchase_order_line(osv.osv):
         if qty:
             res['value'].update({'product_qty': qty})
 
-        # - determine price_unit and taxes_id
-	# import pdb;pdb.set_trace()
         if state not in ('sent','bid') and supplierinfo.supplier_price:
         	if pricelist_id:
 		    price = product_pricelist.price_get(cr, uid, [pricelist_id],
@@ -490,7 +494,6 @@ class purchase_order_line(osv.osv):
         fpos = fiscal_position_id and account_fiscal_position.browse(cr, uid, fiscal_position_id, context=context) or False
         taxes_ids = account_fiscal_position.map_tax(cr, uid, fpos, taxes)
         res['value'].update({'price_unit': price, 'taxes_id': taxes_ids,'isbn': product.ean13})
-	# import pdb;pdb.set_trace()
 
         return res
 
